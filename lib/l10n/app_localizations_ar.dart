@@ -795,6 +795,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginusingyourmobilenumber => 'سجل الدخول من خلال رقم الجوال';
 
   @override
+  String get loginWithNafath => 'تسجيل الدخول عبر نفاذ';
+
+  @override
   String get thephonenumberisincorrectoralreadyinuse =>
       ' رقم الهاتف غير صحيح او مستخدم مسبقا';
 

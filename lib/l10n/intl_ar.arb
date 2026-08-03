@@ -256,6 +256,7 @@
   "pleaseentertheactivationcode": "من فضلك ادخل رمز التفعيل",
   "theactivationcodehasbeenresentsuccessfully": "تم إعادة إرسال رمز التفعيل بنجاح",
   "loginusingyourmobilenumber": "سجل الدخول من خلال رقم الجوال",
+  "loginWithNafath": "تسجيل الدخول عبر نفاذ",
   "thephonenumberisincorrectoralreadyinuse": "رقم الهاتف غير صحيح أو مستخدم مسبقاً",
   "pleaseenteravalidemailaddress": "الرجاء إدخال بريد إلكتروني صحيح",
   "accDeletedSuccess": "تم حذف الحساب بنجاح",

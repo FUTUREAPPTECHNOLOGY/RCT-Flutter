@@ -435,6 +435,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginusingyourmobilenumber": MessageLookupByLibrary.simpleMessage(
       "Log in using your mobile number",
     ),
+    "loginWithNafath": MessageLookupByLibrary.simpleMessage(
+      "Login with Nafath",
+    ),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "madinahAlMunawwarah": MessageLookupByLibrary.simpleMessage(
       "Madinah Al-Munawwarah",

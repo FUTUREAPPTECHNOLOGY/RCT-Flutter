@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:rct/constants/linkapi.dart';
 import 'package:rct/model/renter_model.dart';
@@ -23,14 +25,18 @@ class OwnershipDetailsRepository {
           },
         ),
       );
-
+      log(  'Ownership details API request: GET $linkServerName/api/renters/$id');
+log(  'Ownership details API response: ${response.data}');
       if (response.statusCode == 200) {
+        log('Ownership details fetched successfully: ${response.data}');
         final Map<String, dynamic> data = response.data['data'] ?? {};
         return _mapApiResponseToRenter(data);
       }
 
       throw Exception('Failed to load ownership details');
     } on DioException catch (e) {
+      log(  'DioException occurred: ${e.toString()}');
+      log(  'DioException response data: ${e.response?.data}');
       final message = e.response?.data?['message']?.toString() ?? e.message;
       throw Exception(message ?? 'Network error');
     } catch (e) {

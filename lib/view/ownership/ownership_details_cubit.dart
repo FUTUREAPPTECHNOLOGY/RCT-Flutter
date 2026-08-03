@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'ownership_details_repository.dart';
@@ -12,8 +14,10 @@ class OwnershipDetailsCubit extends Cubit<OwnershipDetailsState> {
     emit(OwnershipDetailsLoading());
     try {
       final renter = await repository.getRenterDetails(id);
+      log('Renter details fetched successfully: $renter');
       emit(OwnershipDetailsSuccess(renter));
     } catch (e) {
+      log('Error fetching renter details: ${e.toString()}');
       emit(OwnershipDetailsError(e.toString()));
     }
   }

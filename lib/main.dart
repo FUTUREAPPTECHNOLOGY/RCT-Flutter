@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:app_links/app_links.dart';
@@ -26,6 +27,8 @@ import 'package:rct/model/realEstatemodel.dart';
 import 'package:rct/model/receipts_model.dart';
 import 'package:rct/model/renter_model.dart';
 import 'package:rct/services/cache_helper.dart';
+import 'package:rct/services/deep_link_service.dart';
+import 'package:rct/services/route_observer.dart';
 import 'package:rct/shared_pref.dart';
 import 'package:rct/splash.dart';
 import 'package:rct/view-model/cubits/build_types_and_floors/build_types_and_floors_cubit.dart';
@@ -65,40 +68,41 @@ import 'view/share_rct/cubit.dart';
 
 late FlutterSecureStorage secureStorage;
 late AppLinks appLinks;
-late GlobalKey<NavigatorState> navigatorKey;
+
 void main() async {
   await WidgetsFlutterBinding.ensureInitialized();
   appLinks = AppLinks();
-  navigatorKey = GlobalKey<NavigatorState>();
+
   Bloc.observer = MyBlocObserver();
+
   await CacheHelper.init();
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
   secureStorage = const FlutterSecureStorage();
-
+  await DeepLinkManager.instance.initialize();
   // await UniLinkHelper.instance.handleInitialUri();
   // UniLinkHelper.instance.initDeepLinkListener();
+// void handleDeepLink(Uri? link) {
+//     if (link == null || link.pathSegments.isEmpty) return;
 
-  appLinks.getInitialLink().then((initialLink) {
-    if (initialLink != null && initialLink.pathSegments.isNotEmpty) {
-      if (initialLink.pathSegments.contains("product")) {
-        _handleProductDetailsLink(initialLink);
-      } else if (initialLink.pathSegments.contains("details")) {
-        _handleRentDetailsLink(initialLink);
-      } else if (initialLink.pathSegments.contains("share")) {
-        _handleShareDetailsLink(initialLink);
-      }
-    }
-  });
+//     if (link.pathSegments.contains("product")) {
+//       _handleProductDetailsLink(link);
+//     } else if (link.pathSegments.contains("details")) {
+//         _handleShareDetailsLink(link);
+//      // _handleRentDetailsLink(link);
+//     } else if (link.pathSegments.contains("share")) {
+//       _handleShareDetailsLink(link);
+//     }
+//   }
+//   appLinks.getInitialLink().then((initialLink) {
+//     handleDeepLink(initialLink);
+//   });
 
-  appLinks.uriLinkStream.listen((initialLink) {
-    if (initialLink != null && initialLink.pathSegments.isNotEmpty) {
-      if (initialLink.pathSegments.contains("product")) {
-        _handleProductDetailsLink(initialLink);
-      }
-    }
-  });
+//   appLinks.uriLinkStream.listen((initialLink) {
+//     handleDeepLink(initialLink);
+//   });
+
   Bloc.observer = MyBlocObserver();
   AppPreferences.init();
   await Firebase.initializeApp();
@@ -210,59 +214,61 @@ void main() async {
   );
 }
 
-void _handleShareDetailsLink(Uri initialLink) {
-  final String? propertyId = initialLink.pathSegments.last;
-  if (propertyId != null) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (navigatorKey.currentState != null) {
-        navigatorKey.currentState?.pushReplacement(
-          MaterialPageRoute(builder: (context) => ShareDetails(id: propertyId)),
-        );
-      } else {
-        Future.delayed(const Duration(milliseconds: 500),
-            () => _handleProductDetailsLink(initialLink));
-      }
-    });
-  }
-}
+// void _handleShareDetailsLink(Uri initialLink) {
+//   final String? propertyId = initialLink.pathSegments.last;
+//   if (propertyId != null) {
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       if (navigatorKey.currentState != null) {
+//         navigatorKey.currentState?.pushReplacement(
+//           MaterialPageRoute(builder: (context) => ShareDetails(id: propertyId)),
+//         );
+//       } else {
+//         Future.delayed(const Duration(milliseconds: 500),
+//             () => _handleProductDetailsLink(initialLink));
+//       }
+//     });
+//   }
+// }
 
-void _handleRentDetailsLink(Uri initialLink) {
-  final String? propertyId = initialLink.pathSegments.last;
-  if (propertyId != null) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (navigatorKey.currentState != null) {
-        navigatorKey.currentState?.pushReplacement(
-          MaterialPageRoute(
-              builder: (context) => OwnershipDetailsScreen(id: propertyId)),
-        );
-      } else {
-        Future.delayed(const Duration(milliseconds: 500),
-            () => _handleProductDetailsLink(initialLink));
-      }
-    });
-  }
-}
+// void _handleRentDetailsLink(Uri initialLink) {
+//   final String? propertyId = initialLink.pathSegments.last;
+//   log('Handling rent details link for property ID: $propertyId');
+//   log('Initial link path segments: ${initialLink.pathSegments}');
+//   if (propertyId != null) {
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       if (navigatorKey.currentState != null) {
+//         navigatorKey.currentState?.pushReplacement(
+//           MaterialPageRoute(
+//               builder: (context) => OwnershipDetailsScreen(id: propertyId)),
+//         );
+//       } else {
+//         Future.delayed(const Duration(milliseconds: 500),
+//             () => _handleProductDetailsLink(initialLink));
+//       }
+//     });
+//   }
+// }
 
-void _handleProductDetailsLink(Uri initialLink) {
-  final String? productId = initialLink.pathSegments.last;
-  if (productId != null) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (navigatorKey.currentState != null) {
-        navigatorKey.currentState?.pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => DetailsScreen(
-              id: productId,
-              isdeeplink: true,
-            ),
-          ),
-        );
-      } else {
-        Future.delayed(const Duration(milliseconds: 500),
-            () => _handleProductDetailsLink(initialLink));
-      }
-    });
-  }
-}
+// void _handleProductDetailsLink(Uri initialLink) {
+//   final String? productId = initialLink.pathSegments.last;
+//   if (productId != null) {
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       if (navigatorKey.currentState != null) {
+//         navigatorKey.currentState?.pushReplacement(
+//           MaterialPageRoute(
+//             builder: (context) => DetailsScreen(
+//               id: productId,
+//               isdeeplink: true,
+//             ),
+//           ),
+//         );
+//       } else {
+//         Future.delayed(const Duration(milliseconds: 500),
+//             () => _handleProductDetailsLink(initialLink));
+//       }
+//     });
+//   }
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -350,7 +356,7 @@ class MyApp extends StatelessWidget {
             ),
             child: MaterialApp(
               title: 'RCT App',
-              navigatorKey: navigatorKey,
+              navigatorKey: DeepLinkManager.instance.navigatorKey,
               theme: ThemeData(
                 brightness: Brightness.light,
                 colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
@@ -365,8 +371,11 @@ class MyApp extends StatelessWidget {
                   labelStyle: const TextStyle(),
                 ),
               ),
+              navigatorObservers: [
+                AppRouteObserver.instance,
+              ],
               debugShowCheckedModeBanner: false,
-              initialRoute: SplashScreen.id,
+              //initialRoute: SplashScreen.id,
               // localizationsDelegates: AppLocalizations.localizationsDelegates,
               localizationsDelegates: [
                 S.delegate,

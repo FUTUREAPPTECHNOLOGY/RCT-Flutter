@@ -60,6 +60,8 @@ class _ChancesFavoriteState extends State<ChancesFavorite> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+                              settings:
+                const RouteSettings(name: ShareDetails.ScreenId),
                                 builder: (context) =>
                                     ShareDetails(id: house.id.toString())),
                           );

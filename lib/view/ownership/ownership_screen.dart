@@ -19,7 +19,8 @@ import 'package:rct/view/ownership/ownership_details_screen.dart';
 import 'package:rct/view/ownership/pdf_preview.dart';
 import 'package:rct/view/ownership/renters_cubit.dart';
 
-import '../../view-model/cubits/real_estate/states.dart' hide FilterSuccessState;
+import '../../view-model/cubits/real_estate/states.dart'
+    hide FilterSuccessState;
 
 class OwnershipScreen extends StatefulWidget {
   OwnershipScreen({
@@ -66,8 +67,8 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
           },
           builder: (context, state) {
             return Padding(
-              padding:
-                  const EdgeInsets.only(top: 40, right: 20, left: 20, bottom: 10),
+              padding: const EdgeInsets.only(
+                  top: 40, right: 20, left: 20, bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -78,14 +79,16 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                           onChanged: (value) {
                             _handleSearch(value);
                             setState(() {
-                              data = context.read<RentersCubit>().searchList ?? [];
+                              data =
+                                  context.read<RentersCubit>().searchList ?? [];
                             });
                           },
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 20),
                             hintText: local.search,
-                            floatingLabelAlignment: FloatingLabelAlignment.start,
+                            floatingLabelAlignment:
+                                FloatingLabelAlignment.start,
                             fillColor: Colors.grey[200],
                             filled: true,
                             hintStyle: const TextStyle(fontSize: 13),
@@ -124,9 +127,13 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Expanded(child: data.isNotEmpty?_buildPropertyGrid(local, data):Center(
-                    child: Image.asset("assets/images/renterEmptyImage.jpeg"),
-                  )),
+                  Expanded(
+                      child: data.isNotEmpty
+                          ? _buildPropertyGrid(local, data)
+                          : Center(
+                              child: Image.asset(
+                                  "assets/images/renterEmptyImage.jpeg"),
+                            )),
                 ],
               ),
             );
@@ -153,10 +160,11 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
   Widget _buildPropertyCard(local, RenterModel? model) {
     return InkWell(
       onTap: () async {
-
         Navigator.push(
           context,
           MaterialPageRoute(
+            settings:
+                const RouteSettings(name: OwnershipDetailsScreen.ScreenId),
             builder: (context) => OwnershipDetailsScreen(
               id: model!.id.toString(),
             ),
@@ -187,12 +195,11 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                               fit: BoxFit.cover,
                             )
                           : Center(
-                            child: const Icon(
+                              child: const Icon(
                                 Icons.image,
-
                                 size: 120,
                               ),
-                          ),
+                            ),
                     ),
                   ),
                   CacheHelper.getData(key: "token") != null
@@ -220,7 +227,7 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                model?.title?? "",
+                model?.title ?? "",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style:
@@ -228,14 +235,14 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
               ),
               const SizedBox(height: 4),
               Text(
-                " ${model?.city?? " "}- ${model?.district?? ""} ",
+                " ${model?.city ?? " "}- ${model?.district ?? ""} ",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 10),
               ),
               const SizedBox(height: 4),
               Text(
-                model?.description?? "",
+                model?.description ?? "",
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 10),
@@ -246,11 +253,11 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                 children: [
                   CacheHelper.getData(key: "lang") == "en"
                       ? SarImage(
-                    color: greenColor,
-                  )
+                          color: greenColor,
+                        )
                       : Container(),
                   Text(
-                    "${NumberFormat('#,###').format(double.tryParse(model?.price?? ""))} ",
+                    "${NumberFormat('#,###').format(double.tryParse(model?.price ?? ""))} ",
                     style: TextStyle(
                       fontSize: 12,
                       color: greenColor,
@@ -258,9 +265,9 @@ class _OwnershipScreenState extends State<OwnershipScreen> {
                     ),
                   ),
                   CacheHelper.getData(key: "lang") == "ar"
-                      ?  SarImage(
-                    color: greenColor,
-                  )
+                      ? SarImage(
+                          color: greenColor,
+                        )
                       : Container(),
                 ],
               ),

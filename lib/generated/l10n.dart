@@ -2089,6 +2089,16 @@ class S {
     );
   }
 
+  /// `Login with Nafath`
+  String get loginWithNafath {
+    return Intl.message(
+      'Login with Nafath',
+      name: 'loginWithNafath',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `The phone number is incorrect or already in use`
   String get thephonenumberisincorrectoralreadyinuse {
     return Intl.message(

@@ -811,6 +811,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginusingyourmobilenumber => 'Log in using your mobile number';
 
   @override
+  String get loginWithNafath => 'Login with Nafath';
+
+  @override
   String get thephonenumberisincorrectoralreadyinuse =>
       'The phone number is incorrect or already in use';
 

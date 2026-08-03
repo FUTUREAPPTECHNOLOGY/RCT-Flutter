@@ -22,8 +22,14 @@ const String linkaboutUs = "$linkServerName/api/who-we-are";
 const String favourites = "$linkServerName/api/good-list";
 const String notificationsLink = "$linkServerName/api/all-notifications";
 const String shareRCT = "$linkServerName/api/opportunities";
-const String linkInvestorUpgradeQuestions = "$linkServerName/api/investor-upgrade/questions";
+const String linkInvestorUpgradeQuestions =
+    "$linkServerName/api/investor-upgrade/questions";
 const String linkInitiatePayment = "$linkServerName/api/payments/initiate";
 const String linkSubmitInvestorUpgrade = "$linkServerName/api/investor-upgrade";
-const String linkSubmitInvestorUpgradeStatus = "$linkServerName/api/investor-upgrade/status";
-const String linkOpportunityInterest = "$linkServerName/api/opportunity-interest";
+const String linkSubmitInvestorUpgradeStatus =
+    "$linkServerName/api/investor-upgrade/status";
+const String linkOpportunityInterest =
+    "$linkServerName/api/opportunity-interest";
+
+const String linkNafathSession = "$linkServerName/api/nafath/session";
+const String linkNafathStatus = "$linkServerName/api/nafath/status";

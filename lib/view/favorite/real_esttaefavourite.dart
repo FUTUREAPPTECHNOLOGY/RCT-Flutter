@@ -62,6 +62,9 @@ class _RealFavoritesState extends State<RealFavorites> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+                                settings: const RouteSettings(
+                                  name: DetailsScreen.screenId,
+                                ),
                                 builder: (context) => DetailsScreen(
                                       id: house.id.toString(),
                                       isdeeplink: false,

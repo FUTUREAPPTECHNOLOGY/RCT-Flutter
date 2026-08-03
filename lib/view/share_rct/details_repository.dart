@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:rct/constants/linkapi.dart';
 import 'package:rct/model/modelget.dart';
@@ -25,7 +27,7 @@ class ShareDetailsRepository {
           },
         ),
       );
-
+      log('Share details API request: GET $shareRCT/$id');
       if (response.statusCode == 200) {
         return Modelget.fromJson(response.data['data']);
       } else {

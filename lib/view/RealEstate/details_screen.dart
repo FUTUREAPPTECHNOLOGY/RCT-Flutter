@@ -414,9 +414,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
 }
 */
 
-
-
-
 /*
 //new
 class DetailsScreen extends StatefulWidget {
@@ -814,7 +811,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
 class DetailsScreen extends StatefulWidget {
   final String? id;
   final bool isdeeplink;
-
+  static const screenId = "/product-details";
   const DetailsScreen({super.key, required this.id, required this.isdeeplink});
 
   @override
@@ -848,10 +845,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
       value: _cubit,
       child: BlocBuilder<RealEstateDetailsCubit, RealEstateDetailsState>(
         builder: (context, state) {
-          if (state is RealEstateDetailsLoading || state is RealEstateDetailsInitial) {
+          if (state is RealEstateDetailsLoading ||
+              state is RealEstateDetailsInitial) {
             return const Scaffold(
               backgroundColor: Colors.white,
-              body: Center(child: CircularProgressIndicator(color: Colors.black)),
+              body:
+                  Center(child: CircularProgressIndicator(color: Colors.black)),
             );
           } else if (state is RealEstateDetailsSuccess) {
             return Scaffold(
@@ -860,15 +859,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 backgroundColor: Colors.white,
                 elevation: 0,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new_sharp, color: Colors.black),
+                  icon: const Icon(Icons.arrow_back_ios_new_sharp,
+                      color: Colors.black),
                   onPressed: () => Navigator.pop(context),
                 ),
                 actions: [
                   IconButton(
                     icon: SvgPicture.asset("assets/icons/shareIcon.svg"),
-                    onPressed: () {
-                      final deepLink = "$linkServerName/product/${state.product.id}";
-                      Share.share("$deepLink : ${state.product.house_type ?? state.product.name}");
+                    onPressed: () async {
+                      final deepLink =
+                          "$linkServerName/product/${state.product.id}";
+                      final box = context.findRenderObject() as RenderBox;
+
+                      await Share.share(
+                        "$deepLink : ${state.product.house_type ?? state.product.name}",
+                        sharePositionOrigin:
+                            box.localToGlobal(Offset.zero) & box.size,
+                      );
                     },
                   ),
                   SizedBox(width: 10.w),
@@ -879,7 +886,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _displayImageSlider(MediaQuery.of(context).size.width, 320.h, state.product),
+                      _displayImageSlider(MediaQuery.of(context).size.width,
+                          320.h, state.product),
                       SizedBox(height: 20.h),
                       _displayDetails(state.product),
                     ],
@@ -892,7 +900,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
               body: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: CustomText(text: state.message, textAlign: TextAlign.center),
+                  child: CustomText(
+                      text: state.message, textAlign: TextAlign.center),
                 ),
               ),
             );
@@ -902,6 +911,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       ),
     );
   }
+
   Widget _displayImageSlider(double width, double height, Modelget product) {
     final images = _images(product);
 
@@ -940,7 +950,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 decorator: DotsDecorator(
                   size: const Size.square(8.0),
                   activeSize: const Size(40.0, 9.0),
-                  activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                  activeShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0)),
                   activeColor: Colors.white,
                   color: const Color(0xFFE0E0E0),
                 ),
@@ -952,10 +963,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
             end: 20,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(24.r), color: Colors.white),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24.r),
+                  color: Colors.white),
               child: CustomText(
                 text: product.house_type,
-                style: TextStyle(fontSize: 14.sp, color: const Color(0xFF20262F), fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    color: const Color(0xFF20262F),
+                    fontWeight: FontWeight.w600),
               ),
             ),
           )
@@ -966,7 +982,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   Widget _displayDetails(Modelget product) {
     final rawPrice = product.price ?? product.total_price ?? '0';
-    final formattedCost = NumberFormat('#,###').format(int.tryParse(rawPrice.toString()) ?? 0);
+    final formattedCost =
+        NumberFormat('#,###').format(int.tryParse(rawPrice.toString()) ?? 0);
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -978,18 +995,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
             children: [
               Expanded(
                 child: CustomText(
-                  text: product.house_name??product.type,
-                  style: TextStyle(fontSize: 14.sp, color: Colors.black, fontWeight: FontWeight.w700),
+                  text: product.house_name ?? product.type,
+                  style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
               Row(
                 children: [
-                  if (CacheHelper.getData(key: "lang") == "ar") SarImage(height: 18.h, color: primaryColor),
+                  if (CacheHelper.getData(key: "lang") == "ar")
+                    SarImage(height: 18.h, color: primaryColor),
                   CustomText(
                     text: " $formattedCost ",
-                    style: TextStyle(fontSize: 14.sp, color: Colors.black, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700),
                   ),
-                  if (CacheHelper.getData(key: "lang") == "en") SarImage(height: 18.h, color: primaryColor),
+                  if (CacheHelper.getData(key: "lang") == "en")
+                    SarImage(height: 18.h, color: primaryColor),
                 ],
               ),
             ],
@@ -997,18 +1022,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
           SizedBox(height: 12.h),
           Row(
             children: [
-              SvgPicture.asset("assets/icons/location.svg", width: 18.w, height: 18.h, colorFilter: const ColorFilter.mode(Color(0xFF494949), BlendMode.srcIn)),
+              SvgPicture.asset("assets/icons/location.svg",
+                  width: 18.w,
+                  height: 18.h,
+                  colorFilter: const ColorFilter.mode(
+                      Color(0xFF494949), BlendMode.srcIn)),
               SizedBox(width: 6.w),
               Expanded(
                 child: CustomText(
-                  text: "${product.city_name ?? ''} - ${product.district_name ?? ''}",
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF494949)),
+                  text:
+                      "${product.city_name ?? ''} - ${product.district_name ?? ''}",
+                  style: TextStyle(
+                      fontSize: 12.sp, color: const Color(0xFF494949)),
                 ),
               )
             ],
           ),
           SizedBox(height: 20.h),
-          _buildFeatureItem("assets/icons/homeSize.svg", "${product.house_space ?? '0'} m²"),
+          _buildFeatureItem(
+              "assets/icons/homeSize.svg", "${product.house_space ?? '0'} m²"),
           _buildTabs(),
           _buildTabContent(product),
           SizedBox(height: 32.h),
@@ -1022,9 +1054,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Widget _buildFeatureItem(String iconPath, String label) {
     return Row(
       children: [
-        SvgPicture.asset(iconPath, width: 20.w, height: 20.h, colorFilter: const ColorFilter.mode(Color(0xFF494949), BlendMode.srcIn)),
+        SvgPicture.asset(iconPath,
+            width: 20.w,
+            height: 20.h,
+            colorFilter:
+                const ColorFilter.mode(Color(0xFF494949), BlendMode.srcIn)),
         SizedBox(width: 8.w),
-        CustomText(text: label, style: TextStyle(fontSize: 10.sp, color: const Color(0xFF494949))),
+        CustomText(
+            text: label,
+            style: TextStyle(fontSize: 10.sp, color: const Color(0xFF494949))),
       ],
     );
   }
@@ -1034,7 +1072,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 24.h),
       padding: EdgeInsets.all(4.r),
-      decoration: BoxDecoration(color: const Color(0xFFF8F8F8), borderRadius: BorderRadius.circular(12.r)),
+      decoration: BoxDecoration(
+          color: const Color(0xFFF8F8F8),
+          borderRadius: BorderRadius.circular(12.r)),
       child: Row(
         children: [
           _buildTabItem(0, local.overview),
@@ -1055,8 +1095,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
           decoration: BoxDecoration(
             color: isSelected ? Colors.white : Colors.transparent,
             borderRadius: BorderRadius.circular(10.r),
-            border:  BorderDirectional(end: BorderSide(color: isSelected?Color(0xFF0A3444):Colors.transparent,width: 2.sp)),
-            boxShadow: isSelected ? [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: const Offset(0, 2))] : null,
+            border: BorderDirectional(
+                end: BorderSide(
+                    color: isSelected ? Color(0xFF0A3444) : Colors.transparent,
+                    width: 2.sp)),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2))
+                  ]
+                : null,
           ),
           child: Center(
             child: CustomText(
@@ -1064,7 +1114,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-                color: isSelected ? const Color(0xFF20262F) : const Color(0xFF8A8A8A),
+                color: isSelected
+                    ? const Color(0xFF20262F)
+                    : const Color(0xFF8A8A8A),
               ),
             ),
           ),
@@ -1092,7 +1144,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
       children: [
         CustomText(
           text: product.description,
-          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF494949), height: 1.5),
+          style: TextStyle(
+              fontSize: 12.sp, color: const Color(0xFF494949), height: 1.5),
         ),
       ],
     );
@@ -1103,9 +1156,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
     return GestureDetector(
       onTap: () {
         if ((product.file ?? '').isNotEmpty) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PDFViewerPage(pdfUrl: product.file!)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PDFViewerPage(pdfUrl: product.file!)));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(local.file_not_found)));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(local.file_not_found)));
         }
       },
       child: Container(
@@ -1117,14 +1174,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ),
         child: Row(
           children: [
-            SvgPicture.asset("assets/icons/document-text.svg", width: 24.w, height: 24.h),
+            SvgPicture.asset("assets/icons/document-text.svg",
+                width: 24.w, height: 24.h),
             SizedBox(width: 12.w),
             CustomText(
               text: local.open_project_file,
-              style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600, color: const Color(0xFF20262F)),
+              style: TextStyle(
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF20262F)),
             ),
             const Spacer(),
-            Icon(Icons.file_download_outlined, color: const Color(0xFF8A8A8A), size: 24.sp),
+            Icon(Icons.file_download_outlined,
+                color: const Color(0xFF8A8A8A), size: 24.sp),
           ],
         ),
       ),
@@ -1139,8 +1201,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
             child: GoogleMap(
-              initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(product.lat.toString()) ?? 0, double.tryParse(product.long.toString()) ?? 0), zoom: 15),
-              markers: {Marker(markerId: const MarkerId('property_location'), position: LatLng(double.tryParse(product.lat.toString()) ?? 0, double.tryParse(product.long.toString()) ?? 0))},
+              initialCameraPosition: CameraPosition(
+                  target: LatLng(double.tryParse(product.lat.toString()) ?? 0,
+                      double.tryParse(product.long.toString()) ?? 0),
+                  zoom: 15),
+              markers: {
+                Marker(
+                    markerId: const MarkerId('property_location'),
+                    position: LatLng(
+                        double.tryParse(product.lat.toString()) ?? 0,
+                        double.tryParse(product.long.toString()) ?? 0))
+              },
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
             ),
@@ -1148,16 +1219,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ),
         SizedBox(height: 16.h),
         GestureDetector(
-          onTap: () => openGoogleMaps(double.tryParse(product.lat.toString()) ?? 0, double.tryParse(product.long.toString()) ?? 0, label: product.name),
+          onTap: () => openGoogleMaps(
+              double.tryParse(product.lat.toString()) ?? 0,
+              double.tryParse(product.long.toString()) ?? 0,
+              label: product.name),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               CustomText(
                 text: S.of(context).open_project_location,
-                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600, color: const Color(0xFF3B82F6)),
+                style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF3B82F6)),
               ),
               SizedBox(width: 6.w),
-              Icon(Icons.open_in_new, color: const Color(0xFF3B82F6), size: 18.sp),
+              Icon(Icons.open_in_new,
+                  color: const Color(0xFF3B82F6), size: 18.sp),
             ],
           ),
         ),
@@ -1171,19 +1249,31 @@ class _DetailsScreenState extends State<DetailsScreen> {
       onTap: () async {
         final deepLink = "$linkServerName/product/${product.id}";
         final message = " عرض عقاري: $deepLink";
-        final uri = Uri(scheme: 'https', host: 'wa.me', path: '966569988788', queryParameters: {'text': message});
+        final uri = Uri(
+            scheme: 'https',
+            host: 'wa.me',
+            path: '966569988788',
+            queryParameters: {'text': message});
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       },
       child: Container(
         width: double.infinity,
         height: 56.h,
-        decoration: BoxDecoration(color: const Color(0xff20262F), borderRadius: BorderRadius.circular(12.r)),
+        decoration: BoxDecoration(
+            color: const Color(0xff20262F),
+            borderRadius: BorderRadius.circular(12.r)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/images/watsap222222.png", height: 24.h, width: 24.w, color: Colors.white),
+            Image.asset("assets/images/watsap222222.png",
+                height: 24.h, width: 24.w, color: Colors.white),
             SizedBox(width: 10.w),
-            CustomText(text: local.contact_via_whatsapp, style: TextStyle(color: Colors.white, fontSize: 14.sp, fontWeight: FontWeight.w700)),
+            CustomText(
+                text: local.contact_via_whatsapp,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700)),
           ],
         ),
       ),
@@ -1191,7 +1281,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   List<String> _images(Modelget product) {
-    final values = [product.image1, product.image2, product.image3, product.image4]
+    final values = [
+      product.image1,
+      product.image2,
+      product.image3,
+      product.image4
+    ]
         .where((e) => (e ?? '').toString().isNotEmpty)
         .map((e) => _normalizeUrl(e.toString()))
         .toList();
@@ -1199,7 +1294,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   String _normalizeUrl(String value) {
-    if (value.startsWith('http://') || value.startsWith('https://')) return value;
+    if (value.startsWith('http://') || value.startsWith('https://'))
+      return value;
     return '$linkServerName/$value';
   }
 }

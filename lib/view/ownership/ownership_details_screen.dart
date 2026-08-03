@@ -688,7 +688,7 @@ import 'ownership_details_state.dart';
 
 class OwnershipDetailsScreen extends StatefulWidget {
   final String id;
-  static String ScreenId = "/ownership-details";
+  static const String ScreenId = "/ownership-details";
 
   const OwnershipDetailsScreen({super.key, required this.id});
 
@@ -733,9 +733,17 @@ class _OwnershipDetailsScreenState extends State<OwnershipDetailsScreen> {
               if (state is OwnershipDetailsSuccess) {
                 return IconButton(
                   icon: SvgPicture.asset("assets/icons/shareIcon.svg"),
-                  onPressed: () {
+                  onPressed: ()async {
                     final deepLink = "$linkServerName/details/${state.renter.id}";
-                    Share.share("$deepLink : ${state.renter.title}");
+                    
+                    final box = context.findRenderObject() as RenderBox;
+
+                    await Share.share(
+                      "$deepLink : ${state.renter.title}",
+                      sharePositionOrigin:
+                          box.localToGlobal(Offset.zero) & box.size,
+                    );
+                
                   },
                 );
               }

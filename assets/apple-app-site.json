@@ -1,0 +1,14 @@
+{
+    "applinks": {
+        "details": [
+            {
+                "appIDs": [
+                    "474QB7LBFT.com.rct.ap"
+                ],
+                "paths": [
+                    "/details/*"
+                ]
+            }
+        ]
+    }
+}

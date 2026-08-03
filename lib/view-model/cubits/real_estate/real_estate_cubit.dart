@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
@@ -215,18 +217,80 @@ class DataCubit extends Cubit<DataState> {
     }
   }
 
-  void filterProperties(
-      {required String city, required String district, required int maxPrice}) {
-    filterList = allDataList.where((item) {
+  void filterProperties({
+    required String city,
+    required String district,
+    required int? maxPrice,
+  }) {
+    filterList = [];
+
+    final searchCity = city.trim().toLowerCase();
+    final searchDistrict = district.trim().toLowerCase();
+
+    log("========== FILTER START ==========");
+    log("Search City: '$searchCity'");
+    log("Search District: '$searchDistrict'");
+    log("Search Price: $maxPrice");
+    log("All Data Length: ${allDataList.length}");
+
+    for (var item in allDataList) {
+      final itemCity = (item.city_name ?? "").trim().toLowerCase();
+      final itemDistrict = (item.district_name ?? "").trim().toLowerCase();
+
       final itemPrice = double.tryParse(item.price ?? "0") ?? 0;
-      return (city.isEmpty ||
-              item.city_name!.toLowerCase().contains(city.toLowerCase())) &&
-          (district.isEmpty ||
-              item.district_name!
-                  .toLowerCase()
-                  .contains(district.toLowerCase().trim())) &&
-          (itemPrice <= maxPrice);
-    }).toList();
+
+      bool isMatched = true;
+
+      bool cityMatched = true;
+      bool districtMatched = true;
+      bool priceMatched = true;
+
+      if (searchCity.isNotEmpty) {
+        cityMatched = itemCity.contains(searchCity);
+
+        if (!cityMatched) {
+          isMatched = false;
+        }
+      }
+
+      if (searchDistrict.isNotEmpty) {
+        districtMatched = itemDistrict.contains(searchDistrict);
+
+        if (!districtMatched) {
+          isMatched = false;
+        }
+      }
+
+      if (maxPrice != null && maxPrice > 0) {
+        priceMatched = itemPrice <= maxPrice;
+
+        if (!priceMatched) {
+          isMatched = false;
+        }
+      }
+
+      log("""
+----------------------------
+Item ID: ${item.id}
+Item City: '$itemCity'
+Item District: '$itemDistrict'
+Item Price: $itemPrice
+
+City Match: $cityMatched
+District Match: $districtMatched
+Price Match: $priceMatched
+
+Final Match: $isMatched
+----------------------------
+""");
+
+      if (isMatched) {
+        filterList!.add(item);
+      }
+    }
+
+    log("FILTER RESULT LENGTH: ${filterList!.length}");
+    log("========== FILTER END ==========");
 
     if (filterList!.isEmpty) {
       emit(DataError(""));
@@ -256,10 +320,14 @@ class DataCubit extends Cubit<DataState> {
 
   // Filter by category (e.g., house type)
   Future<void> filterByCategory(String category) async {
+    log('Filtering by category: $category');
     filterbycategoryList = allDataList.where((item) {
+      log('Item house type: ${item.house_type}');
+      log('Comparing with category: ${item.house_type?.toLowerCase() == category.toLowerCase()}');
       return item.house_type?.toLowerCase() == category.toLowerCase();
     }).toList();
-
+    log('alldataList length: ${allDataList.length}');
+    log('Filtered list length: ${filterbycategoryList?.length}');
     if (filterbycategoryList!.isEmpty) {
       emit(DataError(""));
     } else {

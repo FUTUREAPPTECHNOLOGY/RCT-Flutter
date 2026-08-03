@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ import 'qualified_investor_bottom_sheet.dart';
 class ShareDetails extends StatefulWidget {
   final String id;
   final bool isdeeplink;
-  static String ScreenId = "/details";
+  static const String ScreenId = "/share-details";
 
   const ShareDetails({super.key, required this.id, this.isdeeplink = false});
 
@@ -51,7 +53,8 @@ class _ShareDetailsState extends State<ShareDetails> {
   void initState() {
     super.initState();
     countofchances = 1;
-    isQualifiedInvestor = AppPreferences.getData(key: 'is_qualified_investor') ?? false;
+    isQualifiedInvestor =
+        AppPreferences.getData(key: 'is_qualified_investor') ?? false;
     _cubit = ShareDetailsCubit(ShareDetailsRepository());
     _cubit.getOpportunityDetails(widget.id);
   }
@@ -73,10 +76,19 @@ class _ShareDetailsState extends State<ShareDetails> {
             builder: (context, state) {
               if (state is ShareDetailsSuccess) {
                 return IconButton(
-                  icon:  SvgPicture.asset("assets/icons/shareIcon.svg"),
-                  onPressed: () {
-                    final deepLink = "$linkServerName/details/${state.product.id}";
-                    Share.share("$deepLink : ${state.product.name}");
+                  icon: SvgPicture.asset("assets/icons/shareIcon.svg"),
+                  onPressed: () async {
+                    log('widget.id: ${widget.id}');
+                    log('state.product.id: ${state.product.id}');
+                    final deepLink = "$linkServerName/share/${widget.id}";
+
+                    final box = context.findRenderObject() as RenderBox;
+
+                    await Share.share(
+                      "$deepLink : ${state.product.name}",
+                      sharePositionOrigin:
+                          box.localToGlobal(Offset.zero) & box.size,
+                    );
                   },
                 );
               }
@@ -123,7 +135,8 @@ class _ShareDetailsState extends State<ShareDetails> {
             },
             child: BlocBuilder<ShareDetailsCubit, ShareDetailsState>(
               builder: (context, state) {
-                if (state is ShareDetailsLoading || state is ShareDetailsInitial) {
+                if (state is ShareDetailsLoading ||
+                    state is ShareDetailsInitial) {
                   return const Center(
                     child: CircularProgressIndicator(color: Colors.black),
                   );
@@ -132,15 +145,18 @@ class _ShareDetailsState extends State<ShareDetails> {
                     state is ShareDetailsInterestSuccess ||
                     state is ShareDetailsInterestError) {
                   return BlocBuilder<ShareDetailsCubit, ShareDetailsState>(
-                    buildWhen: (previous, current) => current is ShareDetailsSuccess,
+                    buildWhen: (previous, current) =>
+                        current is ShareDetailsSuccess,
                     builder: (context, state) {
                       if (state is ShareDetailsSuccess) {
                         return SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _displayImageSlider(MediaQuery.of(context).size.width,
-                                  320.h, state.product),
+                              _displayImageSlider(
+                                  MediaQuery.of(context).size.width,
+                                  320.h,
+                                  state.product),
                               SizedBox(
                                 height: 20.h,
                               ),
@@ -219,7 +235,7 @@ class _ShareDetailsState extends State<ShareDetails> {
               top: 20,
               end: 20,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 8.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24.r),
                     color: Colors.white),
@@ -283,7 +299,9 @@ class _ShareDetailsState extends State<ShareDetails> {
                     SizedBox(width: 6.w),
                     Expanded(
                       child: CustomText(
-                        text: S.of(context).property_age_years(product.age.toString()),
+                        text: S
+                            .of(context)
+                            .property_age_years(product.age.toString()),
                         style: TextStyle(
                             fontSize: 12.sp, color: const Color(0xFF494949)),
                       ),
@@ -499,8 +517,12 @@ class _ShareDetailsState extends State<ShareDetails> {
                         id: widget.id,
                         countofchances: countofchances,
                         totalPrice: price * countofchances,
-                        city: product.city_name != "" ? product.city_name : product.location,
-                        district: product.district_name != "" ? product.district_name : product.location,
+                        city: product.city_name != ""
+                            ? product.city_name
+                            : product.location,
+                        district: product.district_name != ""
+                            ? product.district_name
+                            : product.location,
                       ),
                     ),
                   );
@@ -518,14 +540,14 @@ class _ShareDetailsState extends State<ShareDetails> {
         width: double.infinity,
         height: 56.h,
         decoration: BoxDecoration(
-          color: isPending && remaining > 0 ? const Color(0xFF20262F) : Colors.grey,
+          color: isPending && remaining > 0
+              ? const Color(0xFF20262F)
+              : Colors.grey,
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Center(
           child: CustomText(
-            text: isUpgradeRequired
-                ? local.upgrade_request
-                : local.share_now,
+            text: isUpgradeRequired ? local.upgrade_request : local.share_now,
             style: TextStyle(
               color: Colors.white,
               fontSize: 14.sp,
@@ -570,7 +592,8 @@ class _ShareDetailsState extends State<ShareDetails> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(local.cancel, style: const TextStyle(fontSize: 12, color: Colors.black)),
+            child: Text(local.cancel,
+                style: const TextStyle(fontSize: 12, color: Colors.black)),
           ),
           TextButton(
             onPressed: () {
@@ -578,7 +601,8 @@ class _ShareDetailsState extends State<ShareDetails> {
               Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => SendOtp()));
             },
-            child: Text(local.login, style: const TextStyle(fontSize: 12, color: Colors.black)),
+            child: Text(local.login,
+                style: const TextStyle(fontSize: 12, color: Colors.black)),
           ),
         ],
       ),
@@ -619,8 +643,9 @@ class _ShareDetailsState extends State<ShareDetails> {
             color: isSelected ? Colors.white : Colors.transparent,
             borderRadius: BorderRadius.circular(10.r),
             border: BorderDirectional(
-              end: BorderSide(color: isSelected?Color(0xFF0A3444):Colors.transparent,width: 2.sp)
-            ),
+                end: BorderSide(
+                    color: isSelected ? Color(0xFF0A3444) : Colors.transparent,
+                    width: 2.sp)),
             boxShadow: isSelected
                 ? [
                     BoxShadow(
@@ -637,7 +662,9 @@ class _ShareDetailsState extends State<ShareDetails> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-                color: isSelected ? const Color(0xFF20262F) : const Color(0xFF8A8A8A),
+                color: isSelected
+                    ? const Color(0xFF20262F)
+                    : const Color(0xFF8A8A8A),
               ),
             ),
           ),
@@ -835,7 +862,8 @@ class _ShareDetailsState extends State<ShareDetails> {
                     iconPath,
                     width: 20.w,
                     height: 20.h,
-                    colorFilter: const ColorFilter.mode(Color(0xFF20262F), BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(
+                        Color(0xFF20262F), BlendMode.srcIn),
                   )
                 : Image.asset(
                     iconPath,
@@ -862,7 +890,8 @@ class _ShareDetailsState extends State<ShareDetails> {
                   fit: BoxFit.scaleDown,
                   child: Row(
                     children: [
-                      if (showSar && CacheHelper.getData(key: "lang") == "en") ...[
+                      if (showSar &&
+                          CacheHelper.getData(key: "lang") == "en") ...[
                         SarImage(color: const Color(0xFF20262F), height: 12.h),
                         SizedBox(width: 4.w),
                       ],
@@ -874,7 +903,8 @@ class _ShareDetailsState extends State<ShareDetails> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      if (showSar && CacheHelper.getData(key: "lang") != "en") ...[
+                      if (showSar &&
+                          CacheHelper.getData(key: "lang") != "en") ...[
                         SizedBox(width: 4.w),
                         SarImage(color: const Color(0xFF20262F), height: 12.h),
                       ],
@@ -1063,51 +1093,51 @@ class _ShareDetailsState extends State<ShareDetails> {
                   ),
                 ),
               SizedBox(height: 16.h),
-             totalAmount > 30000 && ! isQualifiedInvestor
-                 ? Padding(
-                     padding: EdgeInsets.only(top: 16.h),
-                     child: Row(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Padding(
-                           padding: EdgeInsets.only(top: 2.h),
-                           child: SvgPicture.asset(
-                             "assets/icons/warningIcon.svg",
-                             width: 18.w,
-                             height: 18.h,
-                           ),
-                         ),
-                         SizedBox(width: 10.w),
-                         Expanded(
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             children: [
-                               CustomText(
-                                 text: local.max_investment_limit_q,
-                                 style: TextStyle(
-                                   fontSize: 10.sp,
-                                   color: const Color(0xFFFF8C00),
-                                   fontWeight: FontWeight.w600,
-                                 ),
-                                 textAlign: TextAlign.start,
-                               ),
-                               SizedBox(height: 4.h),
-                               CustomText(
-                                 text: local.max_investment_limit_info,
-                                 style: TextStyle(
-                                   fontSize: 8.sp,
-                                   color: const Color(0xFF8A8A8A),
-                                   fontWeight: FontWeight.w400,
-                                 ),
-                                 textAlign: TextAlign.start,
-                               ),
-                             ],
-                           ),
-                         ),
-                       ],
-                     ),
-                   )
-                 : const SizedBox(),
+              totalAmount > 30000 && !isQualifiedInvestor
+                  ? Padding(
+                      padding: EdgeInsets.only(top: 16.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 2.h),
+                            child: SvgPicture.asset(
+                              "assets/icons/warningIcon.svg",
+                              width: 18.w,
+                              height: 18.h,
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: local.max_investment_limit_q,
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: const Color(0xFFFF8C00),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                SizedBox(height: 4.h),
+                                CustomText(
+                                  text: local.max_investment_limit_info,
+                                  style: TextStyle(
+                                    fontSize: 8.sp,
+                                    color: const Color(0xFF8A8A8A),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),
@@ -1152,7 +1182,8 @@ class _ShareDetailsState extends State<ShareDetails> {
               : null,
         ),
         child: Icon(icon,
-            color: isEnabled ? const Color(0xFF20262F) : const Color(0xFFBDBDBD),
+            color:
+                isEnabled ? const Color(0xFF20262F) : const Color(0xFFBDBDBD),
             size: 24.sp),
       ),
     );

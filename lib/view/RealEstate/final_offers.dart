@@ -280,6 +280,9 @@ class _FinalOffersState extends State<FinalOffers> {
         Navigator.push(
           context,
           MaterialPageRoute(
+             settings: const RouteSettings(
+                                  name: DetailsScreen.screenId,
+                                ),
             builder: (context) => DetailsScreen(
               id: house.id,
               isdeeplink: true,

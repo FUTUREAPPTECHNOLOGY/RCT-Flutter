@@ -18,6 +18,7 @@ import 'package:rct/constants/constants.dart';
 import 'package:rct/constants/linkapi.dart';
 import 'package:rct/model/order_model.dart';
 import 'package:rct/services/cache_helper.dart';
+import 'package:rct/services/deep_link_service.dart';
 import 'package:rct/view-model/cubits/orders%20list/orders_list_cubit.dart';
 import 'package:rct/view-model/cubits/real_estate/real_estate_cubit.dart';
 import 'package:rct/view-model/functions/check_token.dart';
@@ -173,42 +174,54 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    final appLinks = AppLinks(); // AppLinks is singleton
+    // final appLinks = AppLinks(); // AppLinks is singleton
 
-    final sub = appLinks.uriLinkStream.listen((uri) {
-      // Do something (navigation, ...)
-      print('got uri: $uri');
-      String id = uri.toString().split('/').last;
-      String page = uri
-          .toString()
-          .split('/')
-          .elementAt(uri.toString().split('/').length - 2);
-      print('page: $page');
-      if (page == "share") {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ShareDetails(id: id)));
-      } else if (page == "details") {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => OwnershipDetailsScreen(id: id)));
-      }
-    });
+    // final sub = appLinks.uriLinkStream.listen((uri) {
+    //   // Do something (navigation, ...)
+    //   print('got uri: $uri');
+    //   String id = uri.toString().split('/').last;
+    //   String page = uri
+    //       .toString()
+    //       .split('/')
+    //       .elementAt(uri.toString().split('/').length - 2);
+    //   print('page: $page');
+    //   if (page == "share") {
+    //     Navigator.push(context,
+    //         MaterialPageRoute(builder: (context) => ShareDetails(id: id)));
+    //   } else if (page == "details") {
+    //     Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //             builder: (context) => OwnershipDetailsScreen(id: id)));
+    //   }
+    // });
+   
+     DeepLinkManager.instance.handlePendingLink();
+
+  DeepLinkManager.instance.startListening();
     super.initState();
   }
+@override
 
+void dispose() {
+
+  DeepLinkManager.instance.dispose();
+
+  super.dispose();
+
+}
   bool isLoggedIn = false;
 
   Future<void> _loadNameandiamge() async {
     isLoggedIn = await checkLoginStatus();
-    setState(() {
+    //setState(() {
       name = AppPreferences.getData(key: 'myname') ?? '';
       image = AppPreferences.getData(key: 'myimage') ??
           'https://images.app.goo.gl/nZvnQQ58zj1YKVNu9';
       isQualifiedInvestor = AppPreferences.getData(key: 'is_qualified_investor') ?? false;
 
       // Provide a default name if none is saved
-    });
+   // });
   }
 
   bool loged = false;

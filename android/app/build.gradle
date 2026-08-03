@@ -9,6 +9,25 @@ plugins {
 
 import java.util.Properties
 
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -29,8 +48,8 @@ android {
         applicationId "com.rct.app"
         minSdkVersion flutter.minSdkVersion
         targetSdk 36
-        versionCode 95
-        versionName "1.0.42"
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
 
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"

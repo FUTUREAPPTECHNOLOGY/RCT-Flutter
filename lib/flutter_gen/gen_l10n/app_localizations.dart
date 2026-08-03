@@ -1634,6 +1634,12 @@ abstract class AppLocalizations {
   /// **'Log in using your mobile number'**
   String get loginusingyourmobilenumber;
 
+  /// No description provided for @loginWithNafath.
+  ///
+  /// In en, this message translates to:
+  /// **'Login with Nafath'**
+  String get loginWithNafath;
+
   /// No description provided for @thephonenumberisincorrectoralreadyinuse.
   ///
   /// In en, this message translates to:
