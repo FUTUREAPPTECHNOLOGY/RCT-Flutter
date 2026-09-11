@@ -9,7 +9,11 @@ import 'package:rct/common%20copounents/main_button.dart';
 import 'package:rct/constants/constants.dart';
 import 'package:rct/constants/linkapi.dart';
 import 'package:rct/main.dart';
+import 'package:rct/services/cache_helper.dart';
+import 'package:rct/view/auth/nafath_webview_screen.dart';
+import 'package:rct/view-model/services/nafath_api.dart';
 import 'package:rct/shared_pref.dart';
+import 'package:rct/view/auth/sendotp.dart';
 import 'package:rct/view/notification/notifications_screen.dart';
 import 'package:rct/view/home_screen.dart';
 
@@ -52,9 +56,11 @@ class _LogiScreenState extends State<LogiScreen> {
     super.initState();
     FirebaseMessaging.onMessageOpenedApp.listen((message) {});
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      AwesomeNotifications().setListeners(onActionReceivedMethod: (receivedAction) {
+      AwesomeNotifications().setListeners(
+          onActionReceivedMethod: (receivedAction) {
         ////here                  Routes.teacherNavbarPageRoute
-        return Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationScreen()));
+        return Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NotificationScreen()));
       });
       // Ensure a Future<void> is returned
     });
@@ -78,6 +84,7 @@ class _LogiScreenState extends State<LogiScreen> {
   TextEditingController _otpController = TextEditingController();
   bool _isLoading = false;
   Dio _dio = Dio();
+  final NafathApi _nafathApi = NafathApi();
 
   Future<void> _validateOtp() async {
     if (!_formKey.currentState!.validate()) return;
@@ -122,8 +129,9 @@ class _LogiScreenState extends State<LogiScreen> {
 
         print("ttttk$token");
 
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeScreen()),(route)=>false);
-
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("${response.data['message']}")),
@@ -138,12 +146,16 @@ class _LogiScreenState extends State<LogiScreen> {
       if (e.response != null && e.response!.statusCode == 500) {
         // Server-side error (500 status code)
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("الرمز المدخل غير صحيح"), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text("الرمز المدخل غير صحيح"),
+              backgroundColor: Colors.red),
         );
       } else {
         // Handle other types of DioErrors (connection timeout, etc.)
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("الرمز المدخل غير صحيح"), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text("الرمز المدخل غير صحيح"),
+              backgroundColor: Colors.red),
         );
       }
     } catch (e) {
@@ -156,6 +168,65 @@ class _LogiScreenState extends State<LogiScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _loginWithNafath() async {
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SendOtp(),
+      ),
+    );
+
+    if (result == true && mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+        (route) => false,
+      );
+    }
+  }
+
+  Widget _buildNafathButton(String text, VoidCallback onTap) {
+    final tokens = text.split(' ');
+    final leading = tokens.length > 1
+        ? tokens.sublist(0, tokens.length - 1).join(' ')
+        : text;
+    final highlight = tokens.length > 1 ? tokens.last : '';
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: leading.isNotEmpty ? '$leading ' : '',
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              TextSpan(
+                text: highlight,
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   // Function to resend OTP
@@ -177,11 +248,15 @@ class _LogiScreenState extends State<LogiScreen> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('تم إعادة إرسال رمز التفعيل بنجاح'), backgroundColor: Colors.green),
+          SnackBar(
+              content: Text('تم إعادة إرسال رمز التفعيل بنجاح'),
+              backgroundColor: Colors.green),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('فشل  إعادة إرسال رمز التفعيل . حاول مرة اخرى : ${response.statusMessage}')),
+          SnackBar(
+              content: Text(
+                  'فشل  إعادة إرسال رمز التفعيل . حاول مرة اخرى : ${response.statusMessage}')),
         );
       }
     } catch (e) {
@@ -233,7 +308,8 @@ class _LogiScreenState extends State<LogiScreen> {
                 ),
                 SizedBox(height: 30),
                 Directionality(
-                  textDirection: TextDirection.ltr, // Set the text direction to Left-to-Right
+                  textDirection: TextDirection
+                      .ltr, // Set the text direction to Left-to-Right
                   child: PinCodeTextField(
                     appContext: context,
                     length: 6,
@@ -260,7 +336,8 @@ class _LogiScreenState extends State<LogiScreen> {
                       // Border color when the field is active
                       inactiveColor: Colors.grey,
                       // Border color when the field is inactive
-                      selectedColor: Colors.grey, // Border color when a field is selected
+                      selectedColor:
+                          Colors.grey, // Border color when a field is selected
                     ),
                     onChanged: (value) {
                       // Handle changes in the pin code input
@@ -284,7 +361,8 @@ class _LogiScreenState extends State<LogiScreen> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return local.pleaseentertheactivationcode; // Arabic error message
+                        return local
+                            .pleaseentertheactivationcode; // Arabic error message
                       }
                       return null;
                     },
@@ -303,6 +381,11 @@ class _LogiScreenState extends State<LogiScreen> {
                         onTap: _validateOtp,
                         text: local.login,
                       ),
+                const SizedBox(height: 12),
+                _isLoading
+                    ? const SizedBox.shrink()
+                    : _buildNafathButton(
+                        local.loginWithNafath, _loginWithNafath),
                 SizedBox(height: 20),
                 Text(
                   local.didntreceivetheverificationcode,
@@ -323,7 +406,10 @@ class _LogiScreenState extends State<LogiScreen> {
                       onPressed: _resendOtp,
                       child: Text(
                         local.resendverificationcode,
-                        style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

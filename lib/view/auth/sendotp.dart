@@ -9,7 +9,8 @@ import 'package:rct/services/cache_helper.dart';
 import 'package:rct/view-model/functions/snackbar.dart';
 import 'package:rct/view/auth/register_screen.dart';
 import 'package:rct/view/auth/login.dart';
-import 'package:rct/l10n/app_localizations.dart';
+import 'package:rct/view/auth/nafath_webview_screen.dart';
+import 'package:rct/view-model/services/nafath_api.dart';
 import 'package:rct/view/home_screen.dart';
 
 class SendOtp extends StatefulWidget {
@@ -24,6 +25,7 @@ class _SendOtpState extends State<SendOtp> {
   Dio _dio = Dio();
   bool flag = false;
   TapGestureRecognizer _tapGestureRecognizer = TapGestureRecognizer();
+  final NafathApi _nafathApi = NafathApi();
 
   @override
   void dispose() {
@@ -89,9 +91,92 @@ class _SendOtpState extends State<SendOtp> {
     }
   }
 
+  Future<void> _startNafathLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final session = await _nafathApi.createSession(
+        locale: CacheHelper.getData(key: 'lang') == 'en' ? 'en' : 'ar',
+      );
+
+      if (!mounted) return;
+      final result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NafathWebViewScreen(
+            nafathUrl: session.nafathUrl,
+            requestId: session.requestId,
+          ),
+        ),
+      );
+
+      if (result == true && mounted) {
+        Navigator.of(context).pop(true);
+      }
+    } catch (e) {
+      showSnackBar(
+        context,
+        'Unable to start Nafath login. Please try again.',
+        redColor,
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Widget _buildNafathButton(String text, VoidCallback onTap) {
+    final tokens = text.split(' ');
+    final leading = tokens.length > 1
+        ? tokens.sublist(0, tokens.length - 1).join(' ')
+        : text;
+    final highlight = tokens.length > 1 ? tokens.last : '';
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 45,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: leading.isNotEmpty ? '$leading ' : '',
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+              TextSpan(
+                text: highlight,
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var local = S.of(context);
+    print('isLoading: $_isLoading');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -107,8 +192,9 @@ class _SendOtpState extends State<SendOtp> {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>  HomeScreen()),(route)=>false);
-
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (route) => false);
           },
           icon: Icon(
             Icons.arrow_back_ios_new_sharp,
@@ -149,7 +235,9 @@ class _SendOtpState extends State<SendOtp> {
                       width: 1.0,
                     ),
                   ),
-                  suffixText: CacheHelper.getData(key: "lang")=="ar"?'966+':'+966',
+                  suffixText: CacheHelper.getData(key: "lang") == "ar"
+                      ? '966+'
+                      : '+966',
                   suffixStyle: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -196,6 +284,11 @@ class _SendOtpState extends State<SendOtp> {
                       },
                       text: local.login,
                     ),
+              const SizedBox(height: 12),
+              _isLoading
+                  ? const SizedBox.shrink()
+                  : _buildNafathButton(
+                      local.loginWithNafath, _startNafathLogin),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0, top: 50),
                 child: Text.rich(
