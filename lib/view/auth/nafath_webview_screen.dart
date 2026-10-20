@@ -94,8 +94,6 @@ class _NafathWebViewScreenState extends State<NafathWebViewScreen> {
     }
 
     if (!mounted) return;
-    _scheduleTimeout();
-    unawaited(_pollStatus());
     await _controller.loadRequest(Uri.parse(_session.nafathUrl));
   }
 
@@ -197,8 +195,7 @@ class _NafathWebViewScreenState extends State<NafathWebViewScreen> {
   }
 
   bool _isReturnUrl(Uri uri) {
-    final host = uri.host.toLowerCase();
-    return host == nafathReturnHost || host == 'www.$nafathReturnHost';
+    return uri.toString().toLowerCase().contains('callback');
   }
 
   // ------------------------------------------------------------- completion
@@ -233,6 +230,8 @@ class _NafathWebViewScreenState extends State<NafathWebViewScreen> {
       return;
     }
 
+    _scheduleTimeout();
+    unawaited(_pollStatus());
   }
 
   Future<void> _pollStatus() async {
