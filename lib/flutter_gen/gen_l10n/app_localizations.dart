@@ -2845,6 +2845,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hidden defects insurance is available.'**
   String get latent_defects_insurance;
+
+  /// No description provided for @nafathTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nafath login'**
+  String get nafathTitle;
+
+  /// No description provided for @nafathCompleting.
+  ///
+  /// In en, this message translates to:
+  /// **'Completing your login…'**
+  String get nafathCompleting;
+
+  /// No description provided for @nafathCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get nafathCancel;
+
+  /// No description provided for @nafathRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get nafathRetry;
+
+  /// No description provided for @nafathExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Nafath session has expired. Please try again.'**
+  String get nafathExpired;
+
+  /// No description provided for @nafathFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Nafath login could not be completed.'**
+  String get nafathFailed;
+
+  /// No description provided for @nafathUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to start Nafath login. Please try again.'**
+  String get nafathUnavailable;
 }
 
 class _AppLocalizationsDelegate

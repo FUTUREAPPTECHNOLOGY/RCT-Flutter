@@ -482,5 +482,12 @@
   "bathrooms_count": "{count} Bathrooms",
   "rooms_count": "{count} Rooms",
   "area_sqm": "{area} m²",
-  "latent_defects_insurance": "Hidden defects insurance is available."
+  "latent_defects_insurance": "Hidden defects insurance is available.",
+  "nafathTitle": "Nafath login",
+  "nafathCompleting": "Completing your login…",
+  "nafathCancel": "Cancel",
+  "nafathRetry": "Try again",
+  "nafathExpired": "Your Nafath session has expired. Please try again.",
+  "nafathFailed": "Nafath login could not be completed.",
+  "nafathUnavailable": "Unable to start Nafath login. Please try again."
 }

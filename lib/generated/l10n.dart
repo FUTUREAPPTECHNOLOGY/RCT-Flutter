@@ -3693,6 +3693,7 @@ class S {
       args: [],
     );
   }
+
   /// `Direct Ownership`
   String get direct_ownership {
     return Intl.message(
@@ -3883,7 +3884,7 @@ class S {
     return Intl.message('$area m²', name: 'area_sqm', desc: '', args: [area]);
   }
 
-  /// `There is insurance against latent defects`
+  /// `Hidden defects insurance is available.`
   String get latent_defects_insurance {
     return Intl.message(
       'Hidden defects insurance is available.',
@@ -3892,8 +3893,67 @@ class S {
       args: [],
     );
   }
-}
 
+  /// `Nafath login`
+  String get nafathTitle {
+    return Intl.message(
+      'Nafath login',
+      name: 'nafathTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completing your login…`
+  String get nafathCompleting {
+    return Intl.message(
+      'Completing your login…',
+      name: 'nafathCompleting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get nafathCancel {
+    return Intl.message('Cancel', name: 'nafathCancel', desc: '', args: []);
+  }
+
+  /// `Try again`
+  String get nafathRetry {
+    return Intl.message('Try again', name: 'nafathRetry', desc: '', args: []);
+  }
+
+  /// `Your Nafath session has expired. Please try again.`
+  String get nafathExpired {
+    return Intl.message(
+      'Your Nafath session has expired. Please try again.',
+      name: 'nafathExpired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nafath login could not be completed.`
+  String get nafathFailed {
+    return Intl.message(
+      'Nafath login could not be completed.',
+      name: 'nafathFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unable to start Nafath login. Please try again.`
+  String get nafathUnavailable {
+    return Intl.message(
+      'Unable to start Nafath login. Please try again.',
+      name: 'nafathUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+}
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();

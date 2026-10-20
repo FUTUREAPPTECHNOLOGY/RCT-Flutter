@@ -452,5 +452,12 @@
   "bathrooms_count": "{count} حمام",
   "rooms_count": "{count} غرف",
   "area_sqm": "{area} م²",
-  "latent_defects_insurance": "يوجد تأمين ضد العيوب الخفية."
+  "latent_defects_insurance": "يوجد تأمين ضد العيوب الخفية.",
+  "nafathTitle": "تسجيل الدخول عبر نفاذ",
+  "nafathCompleting": "جارٍ إتمام تسجيل الدخول…",
+  "nafathCancel": "إلغاء",
+  "nafathRetry": "إعادة المحاولة",
+  "nafathExpired": "انتهت صلاحية جلسة نفاذ. يرجى المحاولة مرة أخرى.",
+  "nafathFailed": "تعذّر إتمام تسجيل الدخول عبر نفاذ.",
+  "nafathUnavailable": "تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى."
 }

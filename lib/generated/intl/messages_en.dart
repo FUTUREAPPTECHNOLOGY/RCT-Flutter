@@ -371,8 +371,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "fourStreetsFencePercentage": MessageLookupByLibrary.simpleMessage(
       "Four streets",
     ),
-    "without_interest":
-        MessageLookupByLibrary.simpleMessage("Without Interest"),
     "full_transparency": MessageLookupByLibrary.simpleMessage(
       "Full Transparency",
     ),
@@ -380,7 +378,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Guaranteed Returns",
     ),
     "guarantees_description": MessageLookupByLibrary.simpleMessage(
-      "Your home ownership is protected and guaranteed; as RCT is the owner and developer of the assets, ensuring an ownership experience characterized by security, credibility, and complete clarity throughout all stages of contracting.",
+      "Your investment is protected and guaranteed; as the direct owner and developer of the investment assets is RCT, which ensures the highest levels of security and transparency in managing your returns.",
     ),
     "guarantees_title": MessageLookupByLibrary.simpleMessage("Guarantees"),
     "gurayat": MessageLookupByLibrary.simpleMessage("Gurayat"),
@@ -422,6 +420,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "landdetails": MessageLookupByLibrary.simpleMessage("Land details"),
     "language": MessageLookupByLibrary.simpleMessage("Arabic"),
+    "latent_defects_insurance": MessageLookupByLibrary.simpleMessage(
+      "Hidden defects insurance is available.",
+    ),
     "license_number": MessageLookupByLibrary.simpleMessage("License Number"),
     "loadingError": MessageLookupByLibrary.simpleMessage(
       "An error occurred during loading, please try again",
@@ -432,11 +433,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginError": MessageLookupByLibrary.simpleMessage(
       "An error occurred during login",
     ),
-    "loginusingyourmobilenumber": MessageLookupByLibrary.simpleMessage(
-      "Log in using your mobile number",
-    ),
     "loginWithNafath": MessageLookupByLibrary.simpleMessage(
       "Login with Nafath",
+    ),
+    "loginusingyourmobilenumber": MessageLookupByLibrary.simpleMessage(
+      "Log in using your mobile number",
     ),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "madinahAlMunawwarah": MessageLookupByLibrary.simpleMessage(
@@ -461,6 +462,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "monthly_return": MessageLookupByLibrary.simpleMessage("monthly return"),
     "monthly_value": MessageLookupByLibrary.simpleMessage("Monthly Amount"),
     "my_renter": MessageLookupByLibrary.simpleMessage("Real estate"),
+    "nafathCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "nafathCompleting": MessageLookupByLibrary.simpleMessage(
+      "Completing your login…",
+    ),
+    "nafathExpired": MessageLookupByLibrary.simpleMessage(
+      "Your Nafath session has expired. Please try again.",
+    ),
+    "nafathFailed": MessageLookupByLibrary.simpleMessage(
+      "Nafath login could not be completed.",
+    ),
+    "nafathRetry": MessageLookupByLibrary.simpleMessage("Try again"),
+    "nafathTitle": MessageLookupByLibrary.simpleMessage("Nafath login"),
+    "nafathUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Unable to start Nafath login. Please try again.",
+    ),
     "najran": MessageLookupByLibrary.simpleMessage("Najran"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nationalID": MessageLookupByLibrary.simpleMessage("National ID"),
@@ -499,6 +515,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "numberOfFloors": MessageLookupByLibrary.simpleMessage("Number of Floors"),
     "of_text": MessageLookupByLibrary.simpleMessage("of"),
+    "offering_document": MessageLookupByLibrary.simpleMessage(
+      "Offering Document",
+    ),
     "ok": MessageLookupByLibrary.simpleMessage("OK"),
     "oldBuildings": MessageLookupByLibrary.simpleMessage("Old Buildings"),
     "oldBuildingsOrders": MessageLookupByLibrary.simpleMessage(
@@ -539,10 +558,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "overview": MessageLookupByLibrary.simpleMessage("Overview"),
     "own_now": MessageLookupByLibrary.simpleMessage("Own Now"),
     "ownership_guarantees_description": MessageLookupByLibrary.simpleMessage(
-      "Your home ownership is protected and guaranteed; as RCT is the owner and developer of the assets, ensuring an ownership experience characterized by security, credibility, and complete clarity throughout all stages of contracting. Extended warranties on sanitary and electrical materials.",
-    ),
-    "ownership_guarantees_against_hidden_defects":MessageLookupByLibrary.simpleMessage(
-        "Insurance against latent defects is available."
+      "Your home ownership is protected and guaranteed; as RCT is the owner and developer of the assets, ensuring an ownership experience characterized by security, credibility, and complete clarity throughout all stages of contracting.",
     ),
     "ownership_guarantees_title": MessageLookupByLibrary.simpleMessage(
       "Ownership Guarantees",
@@ -936,6 +952,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "whatsapp": MessageLookupByLibrary.simpleMessage("to contact via WhatsApp"),
     "whatsapp_contact": MessageLookupByLibrary.simpleMessage("WhatsApp"),
+    "without_interest": MessageLookupByLibrary.simpleMessage(
+      "Without Interest",
+    ),
     "x": MessageLookupByLibrary.simpleMessage("X"),
     "yanbu": MessageLookupByLibrary.simpleMessage("Yanbu"),
     "year": MessageLookupByLibrary.simpleMessage("Year"),
@@ -949,9 +968,6 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
     "yourresponsehasbeensuccessfully": MessageLookupByLibrary.simpleMessage(
       "Your response has been successfully submitted. Thank you",
-    ),
-    "latent_defects_insurance": MessageLookupByLibrary.simpleMessage(
-        "Hidden defects insurance is available."
     ),
   };
 }

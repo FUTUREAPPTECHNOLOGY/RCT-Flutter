@@ -1470,4 +1470,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get latent_defects_insurance =>
       'Hidden defects insurance is available.';
+
+  @override
+  String get nafathTitle => 'Nafath login';
+
+  @override
+  String get nafathCompleting => 'Completing your login…';
+
+  @override
+  String get nafathCancel => 'Cancel';
+
+  @override
+  String get nafathRetry => 'Try again';
+
+  @override
+  String get nafathExpired =>
+      'Your Nafath session has expired. Please try again.';
+
+  @override
+  String get nafathFailed => 'Nafath login could not be completed.';
+
+  @override
+  String get nafathUnavailable =>
+      'Unable to start Nafath login. Please try again.';
 }

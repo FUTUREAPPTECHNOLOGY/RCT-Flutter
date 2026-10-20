@@ -1439,4 +1439,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get latent_defects_insurance => 'يوجد تأمين ضد العيوب الخفية.';
+
+  @override
+  String get nafathTitle => 'تسجيل الدخول عبر نفاذ';
+
+  @override
+  String get nafathCompleting => 'جارٍ إتمام تسجيل الدخول…';
+
+  @override
+  String get nafathCancel => 'إلغاء';
+
+  @override
+  String get nafathRetry => 'إعادة المحاولة';
+
+  @override
+  String get nafathExpired => 'انتهت صلاحية جلسة نفاذ. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get nafathFailed => 'تعذّر إتمام تسجيل الدخول عبر نفاذ.';
+
+  @override
+  String get nafathUnavailable =>
+      'تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى.';
 }

@@ -251,7 +251,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لا توجد نتائج مطابقة للبحث",
     ),
     "during_months": m2,
-    "editFile": MessageLookupByLibrary.simpleMessage("تعديل الملف"),
+    "editFile": MessageLookupByLibrary.simpleMessage("تعديل الملف "),
     "electronicDeed": MessageLookupByLibrary.simpleMessage("الصك الإلكتروني *"),
     "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
     "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
@@ -335,11 +335,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "fourStreetsFencePercentage": MessageLookupByLibrary.simpleMessage(
       "أربع شوارع",
     ),
-    "without_interest": MessageLookupByLibrary.simpleMessage("بدون فوائد"),
     "full_transparency": MessageLookupByLibrary.simpleMessage("شفافية كاملة"),
     "guaranteed_returns": MessageLookupByLibrary.simpleMessage("عوائد مضمونة"),
     "guarantees_description": MessageLookupByLibrary.simpleMessage(
-      "امتلاكك لمنزلك محمي ومضمون؛ حيث أن الجهة المالكة والمطورة للأصول هي RCT،تأمين ضد العيوب الخفية مما يضمن لك تجربة تملك تتسم بالأمان، المصداقية، والوضوح التام في كافة مراحل التعاقد.",
+      "امتلاكك لمنزلك محمي ومضمون؛ حيث أن الجهة المالكة والمطورة للأصول هي RCT، مما يضمن لك تجربة تملك تتسم بالأمان، المصداقية، والوضوح التام في كافة مراحل التعاقد.",
     ),
     "guarantees_title": MessageLookupByLibrary.simpleMessage("الضمانات"),
     "gurayat": MessageLookupByLibrary.simpleMessage("القريات"),
@@ -381,6 +380,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "landdetails": MessageLookupByLibrary.simpleMessage("تفاصيل الأرض"),
     "language": MessageLookupByLibrary.simpleMessage("English"),
+    "latent_defects_insurance": MessageLookupByLibrary.simpleMessage(
+      "يوجد تأمين ضد العيوب الخفية.",
+    ),
     "license_number": MessageLookupByLibrary.simpleMessage("رقم ترخيص الإعلان"),
     "loadingError": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ أثناء التحميل، حاول مرة أخرى",
@@ -391,11 +393,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginError": MessageLookupByLibrary.simpleMessage(
       "حدث خطأ أثناء تسجيل الدخول",
     ),
-    "loginusingyourmobilenumber": MessageLookupByLibrary.simpleMessage(
-      "سجل الدخول من خلال رقم الجوال",
-    ),
     "loginWithNafath": MessageLookupByLibrary.simpleMessage(
       "تسجيل الدخول عبر نفاذ",
+    ),
+    "loginusingyourmobilenumber": MessageLookupByLibrary.simpleMessage(
+      "سجل الدخول من خلال رقم الجوال",
     ),
     "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "madinahAlMunawwarah": MessageLookupByLibrary.simpleMessage(
@@ -418,6 +420,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "monthly_return": MessageLookupByLibrary.simpleMessage("العائد الشهري"),
     "monthly_value": MessageLookupByLibrary.simpleMessage("المبلغ الشهري"),
     "my_renter": MessageLookupByLibrary.simpleMessage("عقاراتي"),
+    "nafathCancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "nafathCompleting": MessageLookupByLibrary.simpleMessage(
+      "جارٍ إتمام تسجيل الدخول…",
+    ),
+    "nafathExpired": MessageLookupByLibrary.simpleMessage(
+      "انتهت صلاحية جلسة نفاذ. يرجى المحاولة مرة أخرى.",
+    ),
+    "nafathFailed": MessageLookupByLibrary.simpleMessage(
+      "تعذّر إتمام تسجيل الدخول عبر نفاذ.",
+    ),
+    "nafathRetry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
+    "nafathTitle": MessageLookupByLibrary.simpleMessage(
+      "تسجيل الدخول عبر نفاذ",
+    ),
+    "nafathUnavailable": MessageLookupByLibrary.simpleMessage(
+      "تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى.",
+    ),
     "najran": MessageLookupByLibrary.simpleMessage("نجران"),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nationalID": MessageLookupByLibrary.simpleMessage("الهوية الوطنية"),
@@ -851,6 +870,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "waterTank": MessageLookupByLibrary.simpleMessage("خزان المياه"),
     "welcome": MessageLookupByLibrary.simpleMessage("مرحباً بك"),
     "whatsapp_contact": MessageLookupByLibrary.simpleMessage("واتساب"),
+    "without_interest": MessageLookupByLibrary.simpleMessage("بدون فوائد"),
     "x": MessageLookupByLibrary.simpleMessage("تويتر (X)"),
     "yanbu": MessageLookupByLibrary.simpleMessage("ينبع"),
     "year": MessageLookupByLibrary.simpleMessage("سنة"),
@@ -863,9 +883,6 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage("لقد قمت برفض الشروط والأحكام"),
     "yourresponsehasbeensuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم إرسال ردك بنجاح، شكراً لك",
-    ),
-    "latent_defects_insurance": MessageLookupByLibrary.simpleMessage(
-        "يوجد تأمين ضد العيوب الخفية."
     ),
   };
 }

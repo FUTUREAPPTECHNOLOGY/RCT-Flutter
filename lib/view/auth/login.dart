@@ -9,11 +9,9 @@ import 'package:rct/common%20copounents/main_button.dart';
 import 'package:rct/constants/constants.dart';
 import 'package:rct/constants/linkapi.dart';
 import 'package:rct/main.dart';
-import 'package:rct/services/cache_helper.dart';
-import 'package:rct/view/auth/nafath_webview_screen.dart';
-import 'package:rct/view-model/services/nafath_api.dart';
+import 'package:rct/common%20copounents/nafath_button.dart';
+import 'package:rct/view-model/services/nafath_login_flow.dart';
 import 'package:rct/shared_pref.dart';
-import 'package:rct/view/auth/sendotp.dart';
 import 'package:rct/view/notification/notifications_screen.dart';
 import 'package:rct/view/home_screen.dart';
 
@@ -84,7 +82,6 @@ class _LogiScreenState extends State<LogiScreen> {
   TextEditingController _otpController = TextEditingController();
   bool _isLoading = false;
   Dio _dio = Dio();
-  final NafathApi _nafathApi = NafathApi();
 
   Future<void> _validateOtp() async {
     if (!_formKey.currentState!.validate()) return;
@@ -171,61 +168,11 @@ class _LogiScreenState extends State<LogiScreen> {
   }
 
   Future<void> _loginWithNafath() async {
-    final result = await Navigator.push<bool>(
+    await NafathLoginFlow.start(
       context,
-      MaterialPageRoute(
-        builder: (context) => SendOtp(),
-      ),
-    );
-
-    if (result == true && mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-        (route) => false,
-      );
-    }
-  }
-
-  Widget _buildNafathButton(String text, VoidCallback onTap) {
-    final tokens = text.split(' ');
-    final leading = tokens.length > 1
-        ? tokens.sublist(0, tokens.length - 1).join(' ')
-        : text;
-    final highlight = tokens.length > 1 ? tokens.last : '';
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 45,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        alignment: Alignment.center,
-        child: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: leading.isNotEmpty ? '$leading ' : '',
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-              TextSpan(
-                text: highlight,
-                style: const TextStyle(
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      onBusy: (busy) {
+        if (mounted) setState(() => _isLoading = busy);
+      },
     );
   }
 
@@ -384,8 +331,9 @@ class _LogiScreenState extends State<LogiScreen> {
                 const SizedBox(height: 12),
                 _isLoading
                     ? const SizedBox.shrink()
-                    : _buildNafathButton(
-                        local.loginWithNafath, _loginWithNafath),
+                    : NafathButton(
+                        text: local.loginWithNafath,
+                        onTap: _loginWithNafath),
                 SizedBox(height: 20),
                 Text(
                   local.didntreceivetheverificationcode,
