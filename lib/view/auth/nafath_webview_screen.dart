@@ -195,7 +195,7 @@ class _NafathWebViewScreenState extends State<NafathWebViewScreen> {
   }
 
   bool _isReturnUrl(Uri uri) {
-    return uri.toString().toLowerCase().contains('callback');
+    return isNafathReturnUrl(uri);
   }
 
   // ------------------------------------------------------------- completion

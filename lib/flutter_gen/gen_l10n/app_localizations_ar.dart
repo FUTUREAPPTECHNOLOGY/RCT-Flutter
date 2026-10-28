@@ -272,42 +272,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get date => 'التاريخ';
 
   @override
-  String get page1Title => 'نبني لك أحلامك ونخليها واقع';
+  String get page1Title => 'RCT';
 
   @override
-  String get page1Description => 'شركة RCT للمقاولات والاستثمار العقاري';
+  String get page1Description => 'نبني لك أحلامك ونخليها واقع';
 
   @override
-  String get page2Title => 'استأجر الآن وتملك لاحقاً';
+  String get page2Title => 'استأجر الآن وامتلك لاحقاً';
 
   @override
-  String get page2Description => 'بدون فوائد وبدون رسوم مخفية';
+  String get page2Description => 'بدون فوائد وبدون رسوم خفية';
 
   @override
-  String get page3Title => 'انضم إلى RCT';
+  String get page3Title => 'شارك RCT';
 
   @override
-  String get page3Description => 'حقق أرباحاً طويلة الأمد بدون مخاطر';
+  String get page3Description => 'حقق الأرباح على المدى الطويل دون مخاطر';
 
   @override
-  String get page4Title => 'عروض العقارات';
+  String get page4Title => 'عروض عقارية';
 
   @override
-  String get page4Description => 'تصفح عروض العقارات الحصرية';
+  String get page4Description => 'تصفح العروض العقارية الحصرية';
 
   @override
   String get page5Title => 'الحاسبة والبناء';
 
   @override
   String get page5Description =>
-      'يوفر التطبيق حساباً كاملاً للتكلفة، مما يتيح للمستخدمين اختيار العرض الأنسب';
+      'يقدم التطبيق حساب كافة التكاليف ليتمكن المستخدم من اختيار العرض المناسب';
 
   @override
   String get page6Title => 'التصاميم والخدمات';
 
   @override
   String get page6Description =>
-      'تطبيق واحد يجمع لك أفضل حلول العقارات والبناء بمرونة وسهولة';
+      'تطبيق واحد يجمع لك أفضل حلول العقار والبناء بمرونة وسهولة';
 
   @override
   String get skip => 'تخطي';

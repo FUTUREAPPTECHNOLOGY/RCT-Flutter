@@ -509,31 +509,29 @@ class MessageLookup extends MessageLookupByLibrary {
       "ضمانات التملك",
     ),
     "page1Description": MessageLookupByLibrary.simpleMessage(
-      "شركة RCT للمقاولات والاستثمار العقاري",
-    ),
-    "page1Title": MessageLookupByLibrary.simpleMessage(
       "نبني لك أحلامك ونخليها واقع",
     ),
+    "page1Title": MessageLookupByLibrary.simpleMessage("RCT"),
     "page2Description": MessageLookupByLibrary.simpleMessage(
-      "بدون فوائد وبدون رسوم مخفية",
+      "بدون فوائد وبدون رسوم خفية",
     ),
     "page2Title": MessageLookupByLibrary.simpleMessage(
-      "استأجر الآن وتملك لاحقاً",
+      "استأجر الآن وامتلك لاحقاً",
     ),
     "page3Description": MessageLookupByLibrary.simpleMessage(
-      "حقق أرباحاً طويلة الأمد بدون مخاطر",
+      "حقق الأرباح على المدى الطويل دون مخاطر",
     ),
-    "page3Title": MessageLookupByLibrary.simpleMessage("انضم إلى RCT"),
+    "page3Title": MessageLookupByLibrary.simpleMessage("شارك RCT"),
     "page4Description": MessageLookupByLibrary.simpleMessage(
-      "تصفح عروض العقارات الحصرية",
+      "تصفح العروض العقارية الحصرية",
     ),
-    "page4Title": MessageLookupByLibrary.simpleMessage("عروض العقارات"),
+    "page4Title": MessageLookupByLibrary.simpleMessage("عروض عقارية"),
     "page5Description": MessageLookupByLibrary.simpleMessage(
-      "يوفر التطبيق حساباً كاملاً للتكلفة، مما يتيح للمستخدمين اختيار العرض الأنسب",
+      "يقدم التطبيق حساب كافة التكاليف ليتمكن المستخدم من اختيار العرض المناسب",
     ),
     "page5Title": MessageLookupByLibrary.simpleMessage("الحاسبة والبناء"),
     "page6Description": MessageLookupByLibrary.simpleMessage(
-      "تطبيق واحد يجمع لك أفضل حلول العقارات والبناء بمرونة وسهولة",
+      "تطبيق واحد يجمع لك أفضل حلول العقار والبناء بمرونة وسهولة",
     ),
     "page6Title": MessageLookupByLibrary.simpleMessage("التصاميم والخدمات"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),

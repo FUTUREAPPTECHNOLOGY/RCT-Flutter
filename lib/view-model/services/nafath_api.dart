@@ -15,6 +15,11 @@ const Set<String> nafathAllowedHosts = {
   'nafath.api.elm.sa',
 };
 
+bool isNafathReturnUrl(Uri uri) {
+  final host = uri.host.toLowerCase();
+  return host == nafathReturnHost || host == 'www.$nafathReturnHost';
+}
+
 class NafathSessionResponse {
   final String nafathUrl;
   final String requestId;
