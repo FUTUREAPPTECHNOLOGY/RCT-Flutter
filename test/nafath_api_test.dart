@@ -235,5 +235,26 @@ void main() {
       expect(nafathAllowedHosts.contains('rctapp.com'), isTrue);
       expect(nafathAllowedHosts.contains('evil.example.com'), isFalse);
     });
+
+    test('recognises only the app host as a Nafath return URL', () {
+      expect(
+        isNafathReturnUrl(Uri.parse(
+          'https://www.iam.gov.sa/authorize?redirect_uri=https://rctapp.com/callback',
+        )),
+        isFalse,
+      );
+      expect(
+        isNafathReturnUrl(
+          Uri.parse('https://rctapp.com/api/nafath/callback?status=success'),
+        ),
+        isTrue,
+      );
+      expect(
+        isNafathReturnUrl(
+          Uri.parse('https://evil.example.com/path/callback'),
+        ),
+        isFalse,
+      );
+    });
   });
 }
