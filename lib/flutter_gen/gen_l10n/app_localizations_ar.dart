@@ -1461,4 +1461,34 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get nafathUnavailable =>
       'تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى.';
+
+  @override
+  String get nafathIdLabel => 'رقم الهوية';
+
+  @override
+  String get nafathIdInvalid => 'أدخل رقم هوية صحيحاً من 10 أرقام';
+
+  @override
+  String get nafathIdSubtitle => 'تسجيل الدخول من خلال نفاذ';
+
+  @override
+  String get nafathContinue => 'نفاذ';
+
+  @override
+  String get nafathDownloadApp => 'لتحميل تطبيق نفاذ';
+
+  @override
+  String get nafathOpenApp => 'افتح نفاذ';
+
+  @override
+  String get nafathChooseNumber => 'افتح تطبيق نفاذ واختر هذا الرقم';
+
+  @override
+  String get nafathWaiting => 'في انتظار موافقتك…';
+
+  @override
+  String get nafathNotInstalled => 'تطبيق نفاذ غير مثبّت. يرجى تثبيته أولاً.';
+
+  @override
+  String get nafathConnectionIssue => 'مشكلة في الاتصال، جارٍ إعادة المحاولة…';
 }

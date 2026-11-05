@@ -69,6 +69,11 @@
 
     </application>
     <queries>
+        <!-- Nafath app deep link -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="nic" />
+        </intent>
         <!-- If your app checks for SMS support -->
         <intent>
             <action android:name="android.intent.action.VIEW" />

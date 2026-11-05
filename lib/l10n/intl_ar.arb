@@ -459,5 +459,15 @@
   "nafathRetry": "إعادة المحاولة",
   "nafathExpired": "انتهت صلاحية جلسة نفاذ. يرجى المحاولة مرة أخرى.",
   "nafathFailed": "تعذّر إتمام تسجيل الدخول عبر نفاذ.",
-  "nafathUnavailable": "تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى."
+  "nafathUnavailable": "تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى.",
+  "nafathIdLabel": "رقم الهوية",
+  "nafathIdInvalid": "أدخل رقم هوية صحيحاً من 10 أرقام",
+  "nafathIdSubtitle": "تسجيل الدخول من خلال نفاذ",
+  "nafathContinue": "نفاذ",
+  "nafathDownloadApp": "لتحميل تطبيق نفاذ",
+  "nafathOpenApp": "افتح نفاذ",
+  "nafathChooseNumber": "افتح تطبيق نفاذ واختر هذا الرقم",
+  "nafathWaiting": "في انتظار موافقتك…",
+  "nafathNotInstalled": "تطبيق نفاذ غير مثبّت. يرجى تثبيته أولاً.",
+  "nafathConnectionIssue": "مشكلة في الاتصال، جارٍ إعادة المحاولة…"
 }

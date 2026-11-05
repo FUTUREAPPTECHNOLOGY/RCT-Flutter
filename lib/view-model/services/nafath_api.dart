@@ -5,51 +5,46 @@ import 'package:rct/view-model/services/nafath_logger.dart';
 
 const String _tag = 'NafathApi';
 
-/// Hosts the Nafath WebView is permitted to navigate to.
-const String nafathReturnHost = 'rctapp.com';
-const Set<String> nafathAllowedHosts = {
-  'rctapp.com',
-  'www.rctapp.com',
-  'iam.gov.sa',
-  'www.iam.gov.sa',
-  'nafath.api.elm.sa',
-};
+const String nafathPlayStoreUrl =
+    'https://play.google.com/store/apps/details?id=sa.gov.nic.myid';
+const String nafathAppStoreUrl =
+    'https://apps.apple.com/sa/app/%D9%86%D9%81%D8%A7%D8%B0-nafath/id1598909871';
 
-bool isNafathReturnUrl(Uri uri) {
-  final host = uri.host.toLowerCase();
-  return host == nafathReturnHost || host == 'www.$nafathReturnHost';
-}
+/// Used when the backend does not send `deep_links`.
+const String nafathIosDeepLink = 'nafath://home';
+const String nafathAndroidDeepLink = 'nic://nafath';
 
-class NafathSessionResponse {
-  final String nafathUrl;
+/// Reply to `POST /api/nafath/mfa/request`.
+class NafathMfaResponse {
   final String requestId;
-  final DateTime? expiresAt;
+  final String? random;
+  final int? expiresIn;
+  final String? iosDeepLink;
+  final String? androidDeepLink;
 
-  NafathSessionResponse({
-    required this.nafathUrl,
+  NafathMfaResponse({
     required this.requestId,
-    this.expiresAt,
+    this.random,
+    this.expiresIn,
+    this.iosDeepLink,
+    this.androidDeepLink,
   });
 
-  factory NafathSessionResponse.fromJson(Map<String, dynamic> json) {
-    final url = json['nafath_url'];
+  factory NafathMfaResponse.fromJson(Map<String, dynamic> json) {
     final requestId = json['request_id'];
-    if (url is! String || url.isEmpty) {
-      throw const NafathException('Session response is missing nafath_url.');
-    }
     if (requestId is! String || requestId.isEmpty) {
-      throw const NafathException('Session response is missing request_id.');
+      throw const NafathException('Response is missing request_id.');
     }
-    return NafathSessionResponse(
-      nafathUrl: url,
+    final links = json['deep_links'] is Map
+        ? Map<String, dynamic>.from(json['deep_links'] as Map)
+        : const <String, dynamic>{};
+    return NafathMfaResponse(
       requestId: requestId,
-      expiresAt: _parseDate(json['expires_at']),
+      random: json['random']?.toString(),
+      expiresIn: json['expires_in'] is int ? json['expires_in'] as int : null,
+      iosDeepLink: links['ios']?.toString(),
+      androidDeepLink: links['android']?.toString(),
     );
-  }
-
-  static DateTime? _parseDate(dynamic value) {
-    if (value is! String || value.isEmpty) return null;
-    return DateTime.tryParse(value);
   }
 }
 
@@ -59,6 +54,7 @@ class NafathStatusResponse {
   final Map<String, dynamic>? user;
   final String? reason;
   final String? message;
+  final String? random;
 
   NafathStatusResponse({
     required this.status,
@@ -66,6 +62,7 @@ class NafathStatusResponse {
     this.user,
     this.reason,
     this.message,
+    this.random,
   });
 
   bool get isSuccess =>
@@ -87,6 +84,7 @@ class NafathStatusResponse {
           : null,
       reason: json['reason']?.toString(),
       message: json['message']?.toString(),
+      random: json['random']?.toString(),
     );
   }
 }
@@ -94,7 +92,11 @@ class NafathStatusResponse {
 /// A failure the UI can show to the user without leaking transport details.
 class NafathException implements Exception {
   final String message;
-  const NafathException(this.message);
+  final int? statusCode;
+  const NafathException(this.message, {this.statusCode});
+
+  /// An active Nafath request already exists for this ID.
+  bool get isConflict => statusCode == 409;
 
   @override
   String toString() => 'NafathException: $message';
@@ -131,49 +133,58 @@ class NafathApi {
     }
   }
 
-  Future<NafathSessionResponse> createSession({String locale = 'ar'}) async {
-    NafathLog.info(_tag, 'createSession → locale=$locale');
+  /// Sends the national ID to the backend, which creates the Nafath request.
+  /// Server messages (422 / 409 / 429 / 502) are carried on the exception.
+  Future<NafathMfaResponse> requestMfa({
+    required String nationalId,
+    String locale = 'ar',
+  }) async {
+    NafathLog.info(_tag, 'requestMfa → locale=$locale');
     try {
-      final response = await _dio.get(
-        linkNafathSession,
-        queryParameters: {'locale': locale},
-        options: _options(),
+      final response = await _dio.post(
+        linkNafathMfaRequest,
+        data: {'national_id': nationalId, 'locale': locale},
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Accept-Language': _language(),
+          },
+          validateStatus: (status) => status != null && status < 600,
+        ),
       );
-      _logResponse('createSession', response);
+      _logResponse('requestMfa', response);
 
-      if (response.statusCode == 200 && response.data is Map) {
-        final session = NafathSessionResponse.fromJson(
-          Map<String, dynamic>.from(response.data as Map),
-        );
-        NafathLog.info(
-          _tag,
-          'createSession ok → requestId=${NafathLog.mask(session.requestId)}, '
-          'authorizeHost=${Uri.tryParse(session.nafathUrl)?.host ?? '<unknown>'}, '
-          'expiresAt=${session.expiresAt?.toIso8601String() ?? '<absent>'}',
-        );
-        return session;
+      final body = response.data is Map
+          ? Map<String, dynamic>.from(response.data as Map)
+          : const <String, dynamic>{};
+      if (response.statusCode == 200) {
+        return NafathMfaResponse.fromJson(body);
       }
-
       throw NafathException(
-        'Could not start Nafath (HTTP ${response.statusCode}).',
+        body['message']?.toString() ??
+            'Could not start Nafath (HTTP ${response.statusCode}).',
+        statusCode: response.statusCode,
       );
     } on DioException catch (error, stackTrace) {
-      NafathLog.error(_tag, 'createSession failed', error.type, stackTrace);
+      NafathLog.error(_tag, 'requestMfa failed', error.type, stackTrace);
       throw const NafathException('Could not reach the Nafath service.');
     }
   }
 
-  Future<NafathStatusResponse> checkStatus(String requestId) async {
+  /// One status check for an MFA request. The backend always answers 200 with
+  /// `pending`, `success` (returned once) or `failure`.
+  Future<NafathStatusResponse> checkMfaStatus(String requestId) async {
     NafathLog.info(
       _tag,
-      'checkStatus → requestId=${NafathLog.mask(requestId)}',
+      'checkMfaStatus → requestId=${NafathLog.mask(requestId)}',
     );
     try {
       final response = await _dio.get(
-        '$linkNafathStatus/$requestId',
+        '$linkNafathMfaStatus/$requestId',
         options: _options(),
       );
-      _logResponse('checkStatus', response);
+      _logResponse('checkMfaStatus', response);
 
       if (response.statusCode == 200 && response.data is Map) {
         return NafathStatusResponse.fromJson(
@@ -183,9 +194,10 @@ class NafathApi {
 
       throw NafathException(
         'Could not confirm Nafath login (HTTP ${response.statusCode}).',
+        statusCode: response.statusCode,
       );
     } on DioException catch (error, stackTrace) {
-      NafathLog.error(_tag, 'checkStatus failed', error.type, stackTrace);
+      NafathLog.error(_tag, 'checkMfaStatus failed', error.type, stackTrace);
       throw const NafathException('Could not reach the Nafath service.');
     }
   }

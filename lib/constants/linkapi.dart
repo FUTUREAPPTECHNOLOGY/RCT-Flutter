@@ -33,3 +33,5 @@ const String linkOpportunityInterest =
 
 const String linkNafathSession = "$linkServerName/api/nafath/session";
 const String linkNafathStatus = "$linkServerName/api/nafath/status";
+const String linkNafathMfaRequest = "$linkServerName/api/nafath/mfa/request";
+const String linkNafathMfaStatus = "$linkServerName/api/nafath/mfa/status";

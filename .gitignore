@@ -3,11 +3,11 @@ flutter/ephemeral/
 /.dart_tool/flutter_build/
 /.idea/
 /build/
-/.vscode/
 
 
 # Visual Studio user-specific files.
 
+temp_auto_push.bat
 
 # Visual Studio build-related files.
 x64/
@@ -18,3 +18,5 @@ x86/
 *.[Cc]ache
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
+.gitignore
+branch_structure.json
