@@ -2887,6 +2887,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to start Nafath login. Please try again.'**
   String get nafathUnavailable;
+
+  /// No description provided for @nafathIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ID number'**
+  String get nafathIdLabel;
+
+  /// No description provided for @nafathIdInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 10-digit ID number'**
+  String get nafathIdInvalid;
+
+  /// No description provided for @nafathIdSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in with Nafath'**
+  String get nafathIdSubtitle;
+
+  /// No description provided for @nafathContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Nafath'**
+  String get nafathContinue;
+
+  /// No description provided for @nafathDownloadApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Download the Nafath app'**
+  String get nafathDownloadApp;
+
+  /// No description provided for @nafathOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Nafath'**
+  String get nafathOpenApp;
+
+  /// No description provided for @nafathChooseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Nafath app and choose this number'**
+  String get nafathChooseNumber;
+
+  /// No description provided for @nafathWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for your approval…'**
+  String get nafathWaiting;
+
+  /// No description provided for @nafathNotInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'The Nafath app is not installed. Please install it first.'**
+  String get nafathNotInstalled;
+
+  /// No description provided for @nafathConnectionIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection problem, trying again…'**
+  String get nafathConnectionIssue;
 }
 
 class _AppLocalizationsDelegate

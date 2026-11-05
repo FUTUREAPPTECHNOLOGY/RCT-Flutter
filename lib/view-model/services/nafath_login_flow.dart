@@ -5,7 +5,8 @@ import 'package:rct/services/cache_helper.dart';
 import 'package:rct/view-model/functions/snackbar.dart';
 import 'package:rct/view-model/services/nafath_api.dart';
 import 'package:rct/view-model/services/nafath_logger.dart';
-import 'package:rct/view/auth/nafath_webview_screen.dart';
+import 'package:rct/view/auth/nafath_id_screen.dart';
+import 'package:rct/view/auth/nafath_waiting_screen.dart';
 import 'package:rct/view/home_screen.dart';
 
 const String _tag = 'NafathFlow';
@@ -13,13 +14,23 @@ const String _tag = 'NafathFlow';
 /// The single entry point for Nafath login.
 ///
 /// Both the phone-entry screen and the OTP screen call this, so the sequence
-/// (create session → authorize → land on home) lives in exactly one place and
+/// (send ID → show number → wait for approval → land on home) lives in exactly one place and
 /// does not depend on where in the navigation stack it was launched from.
 class NafathLoginFlow {
   const NafathLoginFlow._();
 
-  static Future<bool> start(
+  /// Entry point: shows the ID step, which then calls [run].
+  static Future<void> start(BuildContext context) {
+    return Navigator.of(context).push<void>(
+      MaterialPageRoute(builder: (_) => const NafathIdScreen()),
+    );
+  }
+
+  /// Sends the ID to `mfa/request`, waits for approval in the Nafath app, then
+  /// goes home.
+  static Future<bool> run(
     BuildContext context, {
+    required String nationalId,
     ValueChanged<bool>? onBusy,
     NafathApi? api,
   }) async {
@@ -27,13 +38,24 @@ class NafathLoginFlow {
     final locale = CacheHelper.getData(key: 'lang') == 'en' ? 'en' : 'ar';
 
     onBusy?.call(true);
-    NafathSessionResponse session;
+    NafathMfaResponse mfa;
     try {
-      session = await client.createSession(locale: locale);
+      mfa = await client.requestMfa(
+        nationalId: nationalId,
+        locale: locale,
+      );
+      NafathLog.info(
+        _tag,
+        'mfa request ok → requestId=${NafathLog.mask(mfa.requestId)}',
+      );
     } on NafathException catch (error) {
       NafathLog.warn(_tag, 'could not start: ${error.message}');
       if (context.mounted) {
-        showSnackBar(context, S.of(context).nafathUnavailable, redColor);
+        // The backend sends a ready-to-show message for 422/409/429/502.
+        final shown = error.statusCode != null
+            ? error.message
+            : S.of(context).nafathUnavailable;
+        showSnackBar(context, shown, redColor);
       }
       return false;
     } catch (error, stackTrace) {
@@ -48,10 +70,11 @@ class NafathLoginFlow {
 
     if (!context.mounted) return false;
 
-    final result = await Navigator.of(context).push<NafathWebViewResult>(
+    final result = await Navigator.of(context).push<NafathResult>(
       MaterialPageRoute(
-        builder: (_) => NafathWebViewScreen(
-          session: session,
+        builder: (_) => NafathWaitingScreen(
+          request: mfa,
+          nationalId: nationalId,
           locale: locale,
           api: client,
         ),

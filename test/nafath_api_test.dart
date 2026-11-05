@@ -43,34 +43,6 @@ NafathApi _apiWith(_RecordingAdapter adapter) {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('NafathSessionResponse', () {
-    test('parses expires_at, which the UI needs for the timeout', () {
-      final session = NafathSessionResponse.fromJson({
-        'nafath_url': 'https://www.iam.gov.sa/authservice/authorize?state=abc',
-        'request_id': '4e95759d-0006-48a4-b471-0b34f57e0fd6',
-        'expires_at': '2026-09-11 09:37:04',
-      });
-
-      expect(session.requestId, '4e95759d-0006-48a4-b471-0b34f57e0fd6');
-      expect(session.expiresAt, DateTime(2026, 9, 11, 9, 37, 4));
-    });
-
-    test('survives a missing expires_at', () {
-      final session = NafathSessionResponse.fromJson({
-        'nafath_url': 'https://www.iam.gov.sa/authservice/authorize',
-        'request_id': 'abc',
-      });
-      expect(session.expiresAt, isNull);
-    });
-
-    test('rejects a response with no nafath_url', () {
-      expect(
-        () => NafathSessionResponse.fromJson({'request_id': 'abc'}),
-        throwsA(isA<NafathException>()),
-      );
-    });
-  });
-
   group('NafathStatusResponse', () {
     test('success requires a non-empty token', () {
       expect(
@@ -128,25 +100,83 @@ void main() {
   });
 
   group('NafathApi', () {
-    test('createSession issues exactly one request', () async {
-      final adapter = _RecordingAdapter((_) => _json({
-            'nafath_url': 'https://www.iam.gov.sa/authservice/authorize',
-            'request_id': 'req-1',
-            'expires_at': '2026-09-11 09:37:04',
-          }));
+    test('requestMfa posts national_id and parses request_id', () async {
+      late dynamic body;
+      final adapter = _RecordingAdapter((options) {
+        body = options.data;
+        return _json({
+          'request_id': 'req-9',
+          'random': '80',
+          'expires_in': 60,
+        });
+      });
 
-      final session = await _apiWith(adapter).createSession(locale: 'ar');
+      final result = await _apiWith(adapter)
+          .requestMfa(nationalId: '1012345678', locale: 'ar');
 
-      expect(session.requestId, 'req-1');
+      expect(body, {'national_id': '1012345678', 'locale': 'ar'});
+      expect(result.requestId, 'req-9');
+      expect(result.random, '80');
       expect(adapter.requestedPaths, hasLength(1));
     });
 
-    test('checkStatus issues exactly one request — no polling', () async {
+    test('requestMfa keeps the deep links and expiry', () async {
+      final adapter = _RecordingAdapter((_) => _json({
+            'request_id': 'req-9',
+            'random': '80',
+            'expires_in': 60,
+            'deep_links': {'ios': 'nafath://home', 'android': 'nic://nafath'},
+          }));
+
+      final result =
+          await _apiWith(adapter).requestMfa(nationalId: '1012345678');
+
+      expect(result.expiresIn, 60);
+      expect(result.iosDeepLink, 'nafath://home');
+      expect(result.androidDeepLink, 'nic://nafath');
+    });
+
+    test('checkMfaStatus reads pending with its random', () async {
+      final adapter =
+          _RecordingAdapter((_) => _json({'status': 'pending', 'random': '80'}));
+
+      final status = await _apiWith(adapter).checkMfaStatus('req-1');
+
+      expect(status.isPending, isTrue);
+      expect(status.random, '80');
+    });
+
+    test('requestMfa surfaces the server message on 409', () async {
+      final adapter = _RecordingAdapter(
+        (_) => _json({'message': 'أكمل الطلب في نفاذ'}, status: 409),
+      );
+
+      await expectLater(
+        _apiWith(adapter).requestMfa(nationalId: '1012345678'),
+        throwsA(isA<NafathException>()
+            .having((e) => e.isConflict, 'isConflict', true)
+            .having((e) => e.message, 'message', 'أكمل الطلب في نفاذ')),
+      );
+    });
+
+    test('requestMfa surfaces a 502 message too', () async {
+      final adapter = _RecordingAdapter(
+        (_) => _json({'message': 'مشكلة في الاتصال'}, status: 502),
+      );
+
+      await expectLater(
+        _apiWith(adapter).requestMfa(nationalId: '1012345678'),
+        throwsA(isA<NafathException>()
+            .having((e) => e.statusCode, 'statusCode', 502)),
+      );
+    });
+
+    test('checkMfaStatus issues exactly one request — no polling', () async {
       final adapter = _RecordingAdapter(
         (_) => _json({'status': 'success', 'token': 'secret-token'}),
       );
 
-      final status = await _apiWith(adapter).checkStatus('req-1');
+      final status = await _apiWith(adapter).checkMfaStatus('req-1');
 
       expect(status.isSuccess, isTrue);
       expect(adapter.requestedPaths, hasLength(1));
@@ -157,7 +187,7 @@ void main() {
       final adapter = _RecordingAdapter((_) => _json({}, status: 404));
 
       expect(
-        () => _apiWith(adapter).checkStatus('req-1'),
+        () => _apiWith(adapter).checkMfaStatus('req-1'),
         throwsA(isA<NafathException>()),
       );
     });
@@ -171,7 +201,7 @@ void main() {
       });
 
       expect(
-        () => _apiWith(adapter).createSession(),
+        () => _apiWith(adapter).requestMfa(nationalId: '1012345678'),
         throwsA(isA<NafathException>()),
       );
     });
@@ -225,36 +255,6 @@ void main() {
     test('masks a request id but keeps it correlatable', () {
       final masked = NafathLog.mask('4e95759d-0006-48a4-b471-0b34f57e0fd6');
       expect(masked, '4e95…0fd6');
-    });
-  });
-
-  group('host allowlist', () {
-    test('permits the identity provider and our own host only', () {
-      expect(nafathAllowedHosts.contains('www.iam.gov.sa'), isTrue);
-      expect(nafathAllowedHosts.contains('nafath.api.elm.sa'), isTrue);
-      expect(nafathAllowedHosts.contains('rctapp.com'), isTrue);
-      expect(nafathAllowedHosts.contains('evil.example.com'), isFalse);
-    });
-
-    test('recognises only the app host as a Nafath return URL', () {
-      expect(
-        isNafathReturnUrl(Uri.parse(
-          'https://www.iam.gov.sa/authorize?redirect_uri=https://rctapp.com/callback',
-        )),
-        isFalse,
-      );
-      expect(
-        isNafathReturnUrl(
-          Uri.parse('https://rctapp.com/api/nafath/callback?status=success'),
-        ),
-        isTrue,
-      );
-      expect(
-        isNafathReturnUrl(
-          Uri.parse('https://evil.example.com/path/callback'),
-        ),
-        isFalse,
-      );
     });
   });
 }

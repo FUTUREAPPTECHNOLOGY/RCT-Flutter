@@ -3953,6 +3953,96 @@ class S {
       args: [],
     );
   }
+
+  /// `ID number`
+  String get nafathIdLabel {
+    return Intl.message('ID number', name: 'nafathIdLabel', desc: '', args: []);
+  }
+
+  /// `Enter a valid 10-digit ID number`
+  String get nafathIdInvalid {
+    return Intl.message(
+      'Enter a valid 10-digit ID number',
+      name: 'nafathIdInvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log in with Nafath`
+  String get nafathIdSubtitle {
+    return Intl.message(
+      'Log in with Nafath',
+      name: 'nafathIdSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nafath`
+  String get nafathContinue {
+    return Intl.message('Nafath', name: 'nafathContinue', desc: '', args: []);
+  }
+
+  /// `Download the Nafath app`
+  String get nafathDownloadApp {
+    return Intl.message(
+      'Download the Nafath app',
+      name: 'nafathDownloadApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Nafath`
+  String get nafathOpenApp {
+    return Intl.message(
+      'Open Nafath',
+      name: 'nafathOpenApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open the Nafath app and choose this number`
+  String get nafathChooseNumber {
+    return Intl.message(
+      'Open the Nafath app and choose this number',
+      name: 'nafathChooseNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Waiting for your approval…`
+  String get nafathWaiting {
+    return Intl.message(
+      'Waiting for your approval…',
+      name: 'nafathWaiting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The Nafath app is not installed. Please install it first.`
+  String get nafathNotInstalled {
+    return Intl.message(
+      'The Nafath app is not installed. Please install it first.',
+      name: 'nafathNotInstalled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connection problem, trying again…`
+  String get nafathConnectionIssue {
+    return Intl.message(
+      'Connection problem, trying again…',
+      name: 'nafathConnectionIssue',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

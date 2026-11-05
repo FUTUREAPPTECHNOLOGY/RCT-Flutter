@@ -168,12 +168,7 @@ class _LogiScreenState extends State<LogiScreen> {
   }
 
   Future<void> _loginWithNafath() async {
-    await NafathLoginFlow.start(
-      context,
-      onBusy: (busy) {
-        if (mounted) setState(() => _isLoading = busy);
-      },
-    );
+    await NafathLoginFlow.start(context);
   }
 
   // Function to resend OTP

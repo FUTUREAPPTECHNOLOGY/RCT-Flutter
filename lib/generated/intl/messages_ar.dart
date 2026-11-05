@@ -421,8 +421,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "monthly_value": MessageLookupByLibrary.simpleMessage("المبلغ الشهري"),
     "my_renter": MessageLookupByLibrary.simpleMessage("عقاراتي"),
     "nafathCancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+    "nafathChooseNumber": MessageLookupByLibrary.simpleMessage(
+      "افتح تطبيق نفاذ واختر هذا الرقم",
+    ),
     "nafathCompleting": MessageLookupByLibrary.simpleMessage(
       "جارٍ إتمام تسجيل الدخول…",
+    ),
+    "nafathConnectionIssue": MessageLookupByLibrary.simpleMessage(
+      "مشكلة في الاتصال، جارٍ إعادة المحاولة…",
+    ),
+    "nafathContinue": MessageLookupByLibrary.simpleMessage("نفاذ"),
+    "nafathDownloadApp": MessageLookupByLibrary.simpleMessage(
+      "لتحميل تطبيق نفاذ",
     ),
     "nafathExpired": MessageLookupByLibrary.simpleMessage(
       "انتهت صلاحية جلسة نفاذ. يرجى المحاولة مرة أخرى.",
@@ -430,6 +440,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "nafathFailed": MessageLookupByLibrary.simpleMessage(
       "تعذّر إتمام تسجيل الدخول عبر نفاذ.",
     ),
+    "nafathIdInvalid": MessageLookupByLibrary.simpleMessage(
+      "أدخل رقم هوية صحيحاً من 10 أرقام",
+    ),
+    "nafathIdLabel": MessageLookupByLibrary.simpleMessage("رقم الهوية"),
+    "nafathIdSubtitle": MessageLookupByLibrary.simpleMessage(
+      "تسجيل الدخول من خلال نفاذ",
+    ),
+    "nafathNotInstalled": MessageLookupByLibrary.simpleMessage(
+      "تطبيق نفاذ غير مثبّت. يرجى تثبيته أولاً.",
+    ),
+    "nafathOpenApp": MessageLookupByLibrary.simpleMessage("افتح نفاذ"),
     "nafathRetry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "nafathTitle": MessageLookupByLibrary.simpleMessage(
       "تسجيل الدخول عبر نفاذ",
@@ -437,6 +458,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "nafathUnavailable": MessageLookupByLibrary.simpleMessage(
       "تعذّر بدء تسجيل الدخول عبر نفاذ. حاول مرة أخرى.",
     ),
+    "nafathWaiting": MessageLookupByLibrary.simpleMessage("في انتظار موافقتك…"),
     "najran": MessageLookupByLibrary.simpleMessage("نجران"),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nationalID": MessageLookupByLibrary.simpleMessage("الهوية الوطنية"),

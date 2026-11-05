@@ -1493,4 +1493,35 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get nafathUnavailable =>
       'Unable to start Nafath login. Please try again.';
+
+  @override
+  String get nafathIdLabel => 'ID number';
+
+  @override
+  String get nafathIdInvalid => 'Enter a valid 10-digit ID number';
+
+  @override
+  String get nafathIdSubtitle => 'Log in with Nafath';
+
+  @override
+  String get nafathContinue => 'Nafath';
+
+  @override
+  String get nafathDownloadApp => 'Download the Nafath app';
+
+  @override
+  String get nafathOpenApp => 'Open Nafath';
+
+  @override
+  String get nafathChooseNumber => 'Open the Nafath app and choose this number';
+
+  @override
+  String get nafathWaiting => 'Waiting for your approval…';
+
+  @override
+  String get nafathNotInstalled =>
+      'The Nafath app is not installed. Please install it first.';
+
+  @override
+  String get nafathConnectionIssue => 'Connection problem, trying again…';
 }

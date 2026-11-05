@@ -93,12 +93,7 @@ class _SendOtpState extends State<SendOtp> {
   }
 
   Future<void> _startNafathLogin() async {
-    await NafathLoginFlow.start(
-      context,
-      onBusy: (busy) {
-        if (mounted) setState(() => _isLoading = busy);
-      },
-    );
+    await NafathLoginFlow.start(context);
   }
 
   @override

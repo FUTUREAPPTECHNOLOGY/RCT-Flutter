@@ -463,8 +463,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "monthly_value": MessageLookupByLibrary.simpleMessage("Monthly Amount"),
     "my_renter": MessageLookupByLibrary.simpleMessage("Real estate"),
     "nafathCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "nafathChooseNumber": MessageLookupByLibrary.simpleMessage(
+      "Open the Nafath app and choose this number",
+    ),
     "nafathCompleting": MessageLookupByLibrary.simpleMessage(
       "Completing your login…",
+    ),
+    "nafathConnectionIssue": MessageLookupByLibrary.simpleMessage(
+      "Connection problem, trying again…",
+    ),
+    "nafathContinue": MessageLookupByLibrary.simpleMessage("Nafath"),
+    "nafathDownloadApp": MessageLookupByLibrary.simpleMessage(
+      "Download the Nafath app",
     ),
     "nafathExpired": MessageLookupByLibrary.simpleMessage(
       "Your Nafath session has expired. Please try again.",
@@ -472,10 +482,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "nafathFailed": MessageLookupByLibrary.simpleMessage(
       "Nafath login could not be completed.",
     ),
+    "nafathIdInvalid": MessageLookupByLibrary.simpleMessage(
+      "Enter a valid 10-digit ID number",
+    ),
+    "nafathIdLabel": MessageLookupByLibrary.simpleMessage("ID number"),
+    "nafathIdSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Log in with Nafath",
+    ),
+    "nafathNotInstalled": MessageLookupByLibrary.simpleMessage(
+      "The Nafath app is not installed. Please install it first.",
+    ),
+    "nafathOpenApp": MessageLookupByLibrary.simpleMessage("Open Nafath"),
     "nafathRetry": MessageLookupByLibrary.simpleMessage("Try again"),
     "nafathTitle": MessageLookupByLibrary.simpleMessage("Nafath login"),
     "nafathUnavailable": MessageLookupByLibrary.simpleMessage(
       "Unable to start Nafath login. Please try again.",
+    ),
+    "nafathWaiting": MessageLookupByLibrary.simpleMessage(
+      "Waiting for your approval…",
     ),
     "najran": MessageLookupByLibrary.simpleMessage("Najran"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
