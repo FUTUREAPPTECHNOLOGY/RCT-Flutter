@@ -150,7 +150,7 @@ class _SendOtpState extends State<SendOtp> {
               ),
               SizedBox(height: 20),
               TextFormField(
-                maxLength: 9,
+                maxLength: 8,
                 controller: _phoneController,
                 decoration: InputDecoration(
                   labelText: local.phone,

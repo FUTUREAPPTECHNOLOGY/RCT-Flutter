@@ -910,47 +910,7 @@ void dispose() {
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () async {
-                              bool isLoggedIn = await checkLoginStatus();
-                              print(isLoggedIn);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ShareRct(
-                                    url: '$linkServerName/api/opportunities',
-                                    isLoggedIn: isLoggedIn,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: SizedBox(
-                              height:
-                                  hight, // Ensure 'height' is correctly defined
-                              child: Card(
-                                color: whiteBackGround,
-                                margin: const EdgeInsets.all(5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Center(
-                                  child: ListTile(
-                                    title: Text(
-                                      local.joinRCT,
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                    leading: Image.asset(
-                                      "assets/images/pana.jpg",
-                                      width: 50,
-                                    ),
-                                    trailing: const Icon(
-                                        Icons.arrow_forward_ios_rounded),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        
                           /*InkWell(
                             onTap: () async {
                               // If logged in, navigate to the ChooseBuildingType screen
@@ -1434,6 +1394,49 @@ void dispose() {
                               ),
                             ),
                           ),
+                        
+                           InkWell(
+                            onTap: () async {
+                              bool isLoggedIn = await checkLoginStatus();
+                              print(isLoggedIn);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ShareRct(
+                                    url: '$linkServerName/api/opportunities',
+                                    isLoggedIn: isLoggedIn,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              height:
+                                  hight, // Ensure 'height' is correctly defined
+                              child: Card(
+                                color: Colors.grey.shade200 ,
+                                margin: const EdgeInsets.all(5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: ListTile(
+                                    title: Text(
+                                      local.joinRCT,
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    leading: Image.asset(
+                                      "assets/images/pana.jpg",
+                                      width: 50,
+                                    ),
+                                    trailing: const Icon(
+                                        Icons.arrow_forward_ios_rounded),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                         
                         ],
                       ),
                     ),

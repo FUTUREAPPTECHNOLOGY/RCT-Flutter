@@ -287,7 +287,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get page3Title => 'شارك RCT';
 
   @override
-  String get page3Description => 'حقق الأرباح على المدى الطويل دون مخاطر';
+  String get page3Description => 'حقق الأرباح على المدى الطويل مع خدمة شارك';
 
   @override
   String get page4Title => 'عروض عقارية';
